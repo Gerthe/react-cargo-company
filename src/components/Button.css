@@ -1,0 +1,12 @@
+.custom-button {
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 25px;
+    background: #007BFF linear-gradient(to right, #0084d5, #00C6FF);
+    font-family: "Jura", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+}

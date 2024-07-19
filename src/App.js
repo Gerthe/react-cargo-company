@@ -1,10 +1,18 @@
-
 import './App.css';
-import { Button } from 'antd';
+import {Helmet} from "react-helmet";
+import Menu from "./components/Menu";
+import {TikTok} from "react-tiktok";
+import HeroSection from "./components/HeroSection";
+import Button from "./components/Button";
 
 function App() {
   return (
     <div className="App">
+      <Helmet>
+        <meta charSet="utf-8"/>
+        <title>CargoCompany</title>
+        <link rel="canonical" href="http://CargoCompany/example"/>
+      </Helmet>
       <header className="header">
         <div className="header-content">
           <h1>Название компании</h1>
@@ -13,35 +21,19 @@ function App() {
             <p>Адрес: Примерный адрес, 123</p>
           </div>
         </div>
-        <nav>
-          <ul>
-            <li>Главная</li>
-            <li>Услуги</li>
-            <li>О нас</li>
-            <li>Таможенные услуги</li>
-            <li>Складирование</li>
-            <li>Преимущества</li>
-            <li>Контакты</li>
-            <li>FAQ</li>
-          </ul>
-        </nav>
+        <Menu/>
       </header>
 
-      <section className="hero">
-        <div className="hero-content">
-          <h2>Краткое описание компании</h2>
-          <Button className="blue-button">Узнать больше</Button>
-        </div>
-      </section>
+      <HeroSection/>
 
-      <section className="services">
+      <section id="services" className="services">
         <h2>Наши Услуги</h2>
         <div className="service">
           <h3>Автомобильные перевозки</h3>
           <p>Преимущества</p>
           <p>Сроки доставки</p>
           <p>Цены</p>
-          <button className="red-button">Подробнее</button>
+          <Button className="red-button">Подробнее</Button>
         </div>
       </section>
 
@@ -50,7 +42,7 @@ function App() {
         <p>Таможенное оформление</p>
         <p>Таможенное сопровождение</p>
         <p>Консультации</p>
-        <button className="red-button">Подробнее</button>
+        <Button>Подробнее</Button>
       </section>
 
       <section className="warehousing">
@@ -58,7 +50,7 @@ function App() {
         <p>Услуги складирования</p>
         <p>Управление запасами</p>
         <p>Преимущества</p>
-        <button className="red-button">Подробнее</button>
+        <Button>Подробнее</Button>
       </section>
 
       <section className="advantages">
@@ -72,39 +64,39 @@ function App() {
       </section>
 
       <section className="tiktok-video">
-        <h2>Видео из TikTok</h2>
+        <h2>Наш TikTok</h2>
         <p>Видео о приеме товара на складе</p>
-        <div className="video-placeholder">[Video Placeholder]</div>
+        <TikTok url='https://www.tiktok.com/@yourcat0222/video/7226469547300146433'/>
       </section>
 
       <section className="contact-info">
-        <h2>Контактная информация</h2>
-        <p>Адрес</p>
-        <p>Телефон</p>
+        <h2>Напишите нам</h2>
+        <label>
+          Телефон
+          <input type='phone'/>
+        </label>
+
         <p>Электронная почта</p>
         <form>
           <label>Сообщение:</label>
           <textarea placeholder="Ваше сообщение"></textarea>
-          <button className="blue-button">Отправить</button>
+          <Button>Отправить</Button>
         </form>
       </section>
 
       <section className="faq">
         <h2>Часто задаваемые вопросы (FAQ)</h2>
         <div className="faq-item">[FAQ Item Placeholder]</div>
-        <button className="blue-button">Подробнее</button>
+        <Button>Подробнее</Button>
       </section>
 
       <footer className="footer">
         <nav>
           <ul>
-            <li>Главная</li>
             <li>Услуги</li>
-            <li>О нас</li>
             <li>Таможенные услуги</li>
             <li>Складирование</li>
             <li>Преимущества</li>
-            <li>Контакты</li>
             <li>FAQ</li>
           </ul>
         </nav>
