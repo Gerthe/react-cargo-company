@@ -3,7 +3,6 @@ import {useState} from "react";
 
 const items = [
   {key: 'services', label: <a href='#services'>Услуги</a>},
-  {key: 'customs', label: 'Таможенные услуги'},
   {key: 'warehousing', label: 'Складирование'},
   {key: 'advantages', label: 'Преимущества'},
   {key: 'faq', label: 'FAQ'}

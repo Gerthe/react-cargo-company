@@ -1,0 +1,32 @@
+.header {
+    width: 100%;
+    margin: 24px 0;
+}
+
+.logo-accent {
+    width: 150px;
+    position: absolute;
+    left: 70px;z-index: -1;
+    top:-54px
+}
+
+.header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--main);
+    display: block;
+    width: 125px;
+    height: 125px;
+    padding: 5px;
+    border: 5px solid var(--accent);
+    line-height: 41px;
+    text-transform: capitalize;
+    margin: 0;
+    background: var(--light);
+}
+
+.contact-info {
+    color: var(--main);
+    font-size: 18px;
+    font-weight: bold;
+}

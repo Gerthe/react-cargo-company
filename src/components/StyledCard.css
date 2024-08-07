@@ -1,0 +1,33 @@
+.styled-card {
+    color: var(--main);
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 18px;
+    position: relative;
+    overflow: hidden;
+    border: 5px solid var(--secondary)
+}
+
+.styled-card_title {
+    font-size: 20px;
+    color: var(--light);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    background: var(--main);
+    display: inline-block;
+    padding: 0 8px;
+}
+.styled-card_bg-image {
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 100px;
+    z-index: 0;
+    opacity: 1;
+}
+
+.styled-card_bg-image {
+    fill: var(--main);
+}

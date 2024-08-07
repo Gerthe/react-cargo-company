@@ -1,7 +1,10 @@
 .hero {
-    height: 600px;
-    background: url("/public/source/hero-bg.png")  300px center no-repeat;
-    background-size: cover;
-    color: #0c0760;
-    width: 100%;
+    height: 460px;
+    color: var(--main);
+    margin-top: 40px;
+}
+
+.hero-accent{
+    background: var(--accent);
+    padding: 4px;
 }
