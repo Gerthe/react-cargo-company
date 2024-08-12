@@ -9,8 +9,44 @@ import ServicesSection from "./components/ServicesSection";
 import AdvantagesSection from "./components/AdvantagesSection";
 import {DoubleRightOutlined} from "@ant-design/icons";
 import {theme} from "./theme";
+import {useState} from "react";
 
 function App() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch('/send-message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          setIsSubmitted(true);
+        } else {
+          alert('Error sending message.');
+        }
+      })
+      .catch((error) => console.error('Error:', error));
+  };
+
   return (
     <ConfigProvider theme={theme}>
       <div className="App">
@@ -56,8 +92,40 @@ function App() {
             <form style={{width: '50%'}}>
               <Input placeholder="Имя"/>
               <Input placeholder="Номер телефона"/>
+
               <Button type="primary">Отправить</Button>
             </form>
+
+            {isSubmitted ? (
+              <p>Сообщение отправлено! Ждите ответа.</p>
+            ) : (
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Ваше имя"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Ваш Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+                <textarea
+                  name="message"
+                  placeholder="Ваше сообщение"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
+                <button type="submit">Отправить сообщение</button>
+              </form>
+            )}
 
           </Flex>
 

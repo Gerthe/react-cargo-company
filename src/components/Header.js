@@ -7,7 +7,7 @@ import {useState} from "react";
 
 const items = [
   {key: 'services', label: <a href='#services'>Услуги</a>},
-  {key: 'advantages', label: <a href='#'><a href='#advantages'>Услуги</a></a>},
+  {key: 'advantages', label: <a href='#advantages'>Приемущества</a>},
   {key: 'faq', label: <a href='#faq'>FAQ</a>}
 ]
 
