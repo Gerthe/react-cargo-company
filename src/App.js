@@ -4,26 +4,15 @@ import {TikTok} from "react-tiktok";
 import HeroSection from "./components/HeroSection";
 import Button from "./components/Button";
 import Header from "./components/Header";
-import {ConfigProvider, Typography} from "antd";
+import {ConfigProvider, Flex, Input} from "antd";
 import ServicesSection from "./components/ServicesSection";
 import AdvantagesSection from "./components/AdvantagesSection";
+import {DoubleRightOutlined} from "@ant-design/icons";
+import {theme} from "./theme";
 
 function App() {
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          // Seed Token
-          colorPrimary: '#540d6e',
-          colorBgBase: '#eef0f2',
-          borderRadius: 3,
-        },
-        Button: {
-          primaryColor: '#ffd23f',
-
-        }
-      }}
-    >
+    <ConfigProvider theme={theme}>
       <div className="App">
         <Helmet>
           <meta charSet="utf-8"/>
@@ -38,30 +27,50 @@ function App() {
         <AdvantagesSection/>
 
         <section className="tiktok-video">
-          <h2>Наш TikTok</h2>
-          <p>Видео о приеме товара на складе</p>
-          <TikTok url='https://www.tiktok.com/@yourcat0222/video/7226469547300146433'/>
+          <Flex justify='space-between'>
+            <div style={{width: '50%'}}>
+              <h2>Наш TikTok <DoubleRightOutlined/></h2>
+              <p>Окунитесь в реальный процесс работы нашего склада и узнайте, как мы заботимся о ваших грузах! В нашем
+                TikTok-канале Pekin Cargo 888 мы делимся короткими видео, которые показывают все этапы обработки товаров
+                — от приема и сортировки до упаковки и отправки.</p>
+              <p> Каждое видео — это возможность увидеть нашу команду в действии, познакомиться с нашими современными
+                складскими технологиями и убедиться в нашей надежности. Присоединяйтесь к нашему сообществу на TikTok,
+                следите за обновлениями и будьте в курсе всех новостей и полезных советов по логистике и доставке из
+                Китая.</p>
+            </div>
+            <TikTok url='https://www.tiktok.com/@yourcat0222/video/7226469547300146433'/>
+          </Flex>
         </section>
 
         <section className="contact-info">
           <h2>Напишите нам</h2>
-          <label>
-            Телефон
-            <input type='phone'/>
-          </label>
+          <Flex gap={40}>
+            <div style={{width: '50%'}}>
+              <div>Готовы обсудить детали? Свяжитесь с нами по телефону +77761234588 или отправьте нам сообщение через
+                форму
+                обратной связи. Наши специалисты всегда готовы ответить на все ваши вопросы и предоставить необходимую
+                поддержку.
+              </div>
+            </div>
 
-          <p>Электронная почта</p>
-          <form>
-            <label>Сообщение:</label>
-            <textarea placeholder="Ваше сообщение"></textarea>
-            <Button>Отправить</Button>
-          </form>
+            <form style={{width: '50%'}}>
+              <Input placeholder="Имя"/>
+              <Input placeholder="Номер телефона"/>
+              <Button type="primary">Отправить</Button>
+            </form>
+
+          </Flex>
+
         </section>
 
         <section className="faq">
           <h2>Часто задаваемые вопросы (FAQ)</h2>
-          <div className="faq-item">[FAQ Item Placeholder]</div>
-          <Button>Подробнее</Button>
+          <strong>Каковы сроки доставки?</strong>
+          Доставка занимает от 7 до 14 дней* (в праздничные дни дольше из-за таможни).
+          <strong>Какие документы необходимы для оформления?</strong>
+          Мы предоставим полный список необходимых документов и поможем в их оформлении.
+          <strong>Как можно отслеживать мой груз?</strong>
+          Вы можете отслеживать статус вашего груза в режиме онлайн через наш веб-сайт или мобильное приложение.
         </section>
 
         <footer className="footer">
