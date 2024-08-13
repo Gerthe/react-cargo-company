@@ -1,4 +1,4 @@
-import {Col, Flex} from "antd";
+import {Flex} from "antd";
 import './ServicesSection.css';
 import {StarFilled} from "@ant-design/icons";
 

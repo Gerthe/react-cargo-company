@@ -1,4 +1,5 @@
 export const theme = {
+  cssVar: true,
   token: {
     colorPrimary: '#201E50',
     colorBgBase: '#eef0f2',
