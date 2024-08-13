@@ -1,8 +1,8 @@
-import {Col, Form, Image, Input, Row} from "antd";
+import {Col, Form, Image, Input, Result, Row} from "antd";
 import messageImage from "../assets/message.svg";
 import {CheckCircleOutlined, DoubleRightOutlined} from "@ant-design/icons";
 import Button from "./Button";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const TextArea = Input.TextArea;
 const flexTwoColumnsConfig = {
@@ -28,6 +28,18 @@ const flexTwoColumnsConfig = {
 const ContactForm = () => {
   const [form] = Form.useForm();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittable, setSubmittable] = useState(false);
+  const values = Form.useWatch([], form);
+
+  useEffect(() => {
+    form
+      .validateFields({
+        validateOnly: true,
+      })
+      .then(() => setSubmittable(true))
+      .catch(() => setSubmittable(false));
+  }, [form, values]);
+
   const handleSubmit = () => {
     fetch('/send-message', {
       method: 'POST',
@@ -47,7 +59,7 @@ const ContactForm = () => {
       .catch((error) => console.error('Error:', error));
   };
 
-  return <section className="contact-info">
+  return <section className="wrapper">
     <Row gutter={40} style={{fontSize: 18}}>
       <Col {...flexTwoColumnsConfig}>
         <h2>Напишите нам <DoubleRightOutlined/></h2>
@@ -71,17 +83,31 @@ const ContactForm = () => {
           margin: '20px 0'
         }}>
           {isSubmitted ? (
-            <p><CheckCircleOutlined style={{color: 'var(--secondary'}}/> Сообщение отправлено! Ждите ответа.</p>
+              <Result
+                status="success"
+                title="Сообщение отправлено!"
+                subTitle="Спасибо за ваше сообщение! Наш оператор свяжется с вами в ближайшее время, чтобы уточнить все детали вашего заказа."
+              />
           ) : (
             <Form form={form} onFinish={handleSubmit} layout="vertical">
-              <Form.Item label="Ваше имя" name="name">
+              <Form.Item label="Ваше имя" name="name" rules={[
+                {
+                  required: true,
+                  message: 'Сообщите нам Ваше имя, чтобы мы знали как к Вам обратиться',
+                },
+              ]}>
                 <Input
                   placeholder="Ваше имя"
                   required
                   size='large'
                 />
               </Form.Item>
-              <Form.Item label="Ваш номер телефона" name="phone">
+              <Form.Item label="Ваш номер телефона" name="phone"  rules={[
+                {
+                  required: true,
+                  message: 'Укажите свой телефонный номер для связи',
+                },
+              ]}>
                 <Input
                   placeholder="+7**********"
                   required
@@ -96,7 +122,7 @@ const ContactForm = () => {
                 />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" onClick={handleSubmit}>Отправить сообщение</Button></Form.Item>
+                <Button type="primary" disabled={!submittable} onClick={handleSubmit}>Отправить сообщение</Button></Form.Item>
             </Form>
           )}
         </div>

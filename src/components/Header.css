@@ -1,13 +1,9 @@
-.header {
-    width: 100%;
-    margin: 24px 0;
-}
-
 .logo-accent {
     width: 150px;
     position: absolute;
-    left: 70px;z-index: -1;
-    top:-54px
+    left: 70px;
+    top:-54px;
+    z-index:0;
 }
 
 .header h1 {
@@ -23,9 +19,7 @@
     text-transform: capitalize;
     margin: 0;
     background: var(--light);
-}
-
-.contact-info {
-    font-size: 18px;
-    font-weight: 500;
+    z-index: 1;
+    text-align: left;
+    box-sizing: content-box;
 }

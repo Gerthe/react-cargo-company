@@ -3,7 +3,7 @@ import './ServicesSection.css';
 import {StarFilled} from "@ant-design/icons";
 
 const ServicesSection = () => {
-  return <section id="services" className="services styled-container">
+  return <section id="services" className="services styled-container wrapper">
     <h2>Наши Услуги</h2>
     <Flex gap="large">
       <div style={{width: '50%'}} className="service">

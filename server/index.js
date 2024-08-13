@@ -26,8 +26,8 @@ const chatId = process.env.TELEGRAM_CHAT_ID;
 app.post('/send-message', async (req, res) => {
   const {name, phone, message} = req.body;
   const text = `Имя: ${name}
-  Телефон: ${phone}
-  Сообщение: ${message}`;
+Телефон: ${phone}
+Сообщение: ${message || 'Без сообщения'}`;
 
   const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
 

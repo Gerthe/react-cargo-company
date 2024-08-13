@@ -11,7 +11,7 @@ const items = [
   {key: 'faq', label: <a href='#faq'>FAQ</a>}
 ]
 
-const Header = () => {
+const HeaderSection = () => {
   const [current, setCurrent] = useState();
   const onClick = (e) => {
     console.log('click ', e);
@@ -19,11 +19,14 @@ const Header = () => {
   };
 
   return <header className="header">
-    <div className="container">
+    <div className="wrapper">
       <img src={image} className="logo-accent" alt="Pekin Cargo 888"/>
       <Flex justify="space-between">
         <h1>Pekin<br/>Cargo<br/>888</h1>
-        <Flex vertical className="contact-info" gap="small">
+        <Flex vertical className="contact-info" gap="small" style={{
+          fontSize: 18,
+          fontWeight: 500
+        }}>
           <Space>
             <PhoneTwoTone twoToneColor="#7AC74F" style={{fontSize: 24}}/>
             <a href="tel:+77761234588" style={{color: "var(--main)"}}>+77761234588</a>
@@ -52,6 +55,7 @@ const Header = () => {
                style={{
                  textTransform: 'uppercase',
                  fontSize: 20,
+                 lineHeight:2,
                  fontWeight: "bold",
                  borderBottom: 0,
                  margin: '12px 0'
@@ -63,4 +67,4 @@ const Header = () => {
   </header>
 }
 
-export default Header;
+export default HeaderSection;

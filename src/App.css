@@ -11,8 +11,7 @@ body {
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    font-variation-settings:
-            "wdth" 100;
+    font-variation-settings: "wdth" 100;
     background-color: var(--light);
     color: var(--black);
     font-size: 18px;
@@ -36,50 +35,35 @@ h3 {
     padding: 4px;
 }
 
-.container, section {
-    max-width: 1024px;
-    margin: 60px auto;
+.wrapper {
     position: relative;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 20px 0;
+    max-width: 1200px;
 }
 
 .styled-container {
     width: 100%;
-    height: 100%;
     background-color: #242162;
     background-image: linear-gradient(45deg, transparent 33.3%, var(--main) 33.3%, var(--main) 66.6%, transparent 66.6%),
     linear-gradient(-45deg, transparent 33.3%, var(--main) 33.3%, var(--main) 66.6%, transparent 66.6%);
     background-size: 60px 60px;
 }
 
-
-.contact-info form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+@media (max-width: 1200px) {
+    .wrapper {
+        padding: 0 20px;
+    }
 }
 
-.contact-info textarea {
-    resize: none;
-    height: 100px;
-    width: 400px;
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 0 15px;
+    }
 }
 
-.footer {
-    padding: 20px 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footer nav ul {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.footer .social-media, .footer .legal-info {
-    text-align: center;
-    margin-top: 10px;
+@media (max-width: 576px) {
+    .wrapper {
+        padding: 0 10px;
+    }
 }

@@ -4,7 +4,7 @@ import {Flex, Image} from "antd";
 
 const HeroSection = () => {
   return <section className="hero">
-    <div className="container">
+    <div className="wrapper">
       <Flex gap={20}>
         <div style={{width: "50%"}}>
           <h2>Доставка грузов из Китая – быстро, надежно, выгодно!</h2>

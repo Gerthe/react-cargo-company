@@ -1,4 +1,4 @@
-import {Flex} from "antd";
+import {Divider, Flex} from "antd";
 
 const faqQuestions = [
   {
@@ -15,13 +15,18 @@ const faqQuestions = [
 ];
 
 const FaqSection = () => {
-  return <section className="faq">
+  return <section className="wrapper">
     <h2>Часто задаваемые вопросы (FAQ)</h2>
     <Flex vertical>
       {faqQuestions.map((item, index) =>
-        <div key={index} style={{borderBottom: "3px solid var(--secondary)", paddingBottom: 12}}>
+        <div key={index}>
           <h3>{index + 1}. {item.title}</h3>
           {item.answer}
+          <Divider
+            style={{
+              borderColor: 'var(--secondary)',
+            }}
+          />
         </div>
       )}
     </Flex>

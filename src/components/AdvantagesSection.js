@@ -6,7 +6,7 @@ import fig3 from './../assets/079.svg'
 import fig4 from './../assets/089.svg'
 
 const AdvantagesSection = () => {
-  return <section className="advantages" style={{padding: '40px 0'}}>
+  return <section className="advantages wrapper">
     <h2>Преимущества компании</h2>
     <Row gutter={[24, 24]}>
       <Col span={12}>
