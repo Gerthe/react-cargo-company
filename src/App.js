@@ -9,8 +9,11 @@ import AdvantagesSection from "./components/AdvantagesSection";
 import {DoubleRightOutlined} from "@ant-design/icons";
 import {theme} from "./theme";
 import ContactForm from "./components/ContactForm";
+import FaqSection from "./components/FaqSection";
 
 function App() {
+  const videoUrl = 'https://www.tiktok.com/@yourcat0222/video/7226469547300146433';
+
   return (
     <ConfigProvider theme={theme}>
       <div className="App">
@@ -38,21 +41,12 @@ function App() {
                 следите за обновлениями и будьте в курсе всех новостей и полезных советов по логистике и доставке из
                 Китая.</p>
             </div>
-            <TikTok url='https://www.tiktok.com/@yourcat0222/video/7226469547300146433'/>
+            <TikTok url={videoUrl}/>
           </Flex>
         </section>
 
         <ContactForm/>
-
-        <section className="faq">
-          <h2>Часто задаваемые вопросы (FAQ)</h2>
-          <strong>Каковы сроки доставки?</strong>
-          Доставка занимает от 7 до 14 дней* (в праздничные дни дольше из-за таможни).
-          <strong>Какие документы необходимы для оформления?</strong>
-          Мы предоставим полный список необходимых документов и поможем в их оформлении.
-          <strong>Как можно отслеживать мой груз?</strong>
-          Вы можете отслеживать статус вашего груза в режиме онлайн через наш веб-сайт или мобильное приложение.
-        </section>
+        <FaqSection/>
 
         <footer className="footer">
           <nav>
