@@ -1,29 +1,40 @@
-import {Flex} from "antd";
+import {Col, Row} from "antd";
 import './ServicesSection.css';
 import {StarFilled} from "@ant-design/icons";
+import {flexTwoColumnsConfig} from "../theme";
+
+const headerStyle = {borderBottom: '5px solid var(--secondary', color: 'var(--accent)'};
+
+const advantages = [
+  {
+    title: 'Автомобильные перевозки',
+    list: [
+      'Быстрая и надежная доставка ваших грузов по доступной цене. Мы предлагаем гибкие условия и индивидуальный подход к каждому клиенту.',
+      'Доставка занимает от 7 до 14 дней*',
+      'Стоимость доставки – 3,6$ за 1 кг.'
+    ]
+  },
+  {
+    title: 'Складирование',
+    list: [
+      'Наши современные складские помещения созданы для безопасного и удобного хранения ваших товаров.',
+      'Первые 7 дней хранения абсолютно бесплатны! Если потребуется дольше, дальнейшее хранение стоит всего 500 тг за день.',
+      'Мы внимательно следим за правилами размещения товаров, не размещаем технику рядом с жидкостями, чтобы минимизировать риски повреждения.'
+    ]
+  }
+]
 
 const ServicesSection = () => {
-  return <section id="services" className="services styled-container wrapper">
-    <h2>Наши Услуги</h2>
-    <Flex gap="large">
-      <div style={{width: '50%'}} className="service">
-        <h3>Автомобильные перевозки</h3>
-
-        <p><StarFilled style={{color: "#7AC74F"}}/> Быстрая и надежная доставка ваших грузов по доступной цене. Мы
-          предлагаем гибкие условия и
-          индивидуальный подход к каждому клиенту.</p>
-        <p><StarFilled style={{color: "#7AC74F"}}/> Доставка занимает от 7 до 14 дней*</p>
-        <p><StarFilled style={{color: "#7AC74F"}}/> Стоимость доставки – 3,6$ за 1 кг.</p>
-      </div>
-
-      <div style={{width: '50%'}} className="service">
-        <h3>Складирование</h3>
-
-        <p><StarFilled style={{color: "#7AC74F"}}/> Современные складские помещения для хранения ваших товаров.</p>
-        <p><StarFilled style={{color: "#7AC74F"}}/> Хранение до 7 дней бесплатно, затем платная услуга – 500 тг за
-          каждый день.</p>
-      </div>
-    </Flex>
+  return <section id="services" className="styled-container wrapper">
+    <div style={{padding: 20}}>
+      <h2 style={{color: 'var(--light)'}}>Наши Услуги</h2>
+      <Row gutter={20} style={{color: 'var(--light'}}>
+        {advantages.map((item, index) => <Col {...flexTwoColumnsConfig} key={index}>
+          <h3 style={headerStyle}>{item.title}</h3>
+          {item.list.map((point, index) => <p><StarFilled style={{color: "var(--secondary"}}/> {point}</p>)}
+        </Col>)}
+      </Row>
+    </div>
   </section>
 }
 

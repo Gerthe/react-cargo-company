@@ -1,11 +1,4 @@
-.services {
-    color: var(--light);
-    padding: 24px 40px 40px;
-}
 
-.services h2 {
-    color: var(--light);
-}
 
 .services h3 {
     display: inline-block;

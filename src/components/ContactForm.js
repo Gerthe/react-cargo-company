@@ -1,29 +1,11 @@
 import {Col, Form, Image, Input, Result, Row} from "antd";
 import messageImage from "../assets/message.svg";
-import {CheckCircleOutlined, DoubleRightOutlined} from "@ant-design/icons";
+import {DoubleRightOutlined} from "@ant-design/icons";
 import Button from "./Button";
 import {useEffect, useState} from "react";
+import {flexTwoColumnsConfig} from "../theme";
 
 const TextArea = Input.TextArea;
-const flexTwoColumnsConfig = {
-  xs: {
-    flex: '100%',
-  },
-  sm: {
-    flex: '100%',
-  },
-  md: {
-    flex: '100%',
-  },
-  lg: {
-    flex: '50%',
-  },
-  xl: {
-    flex: '50%',
-  },
-  style: {fontSize: 18}
-}
-
 
 const ContactForm = () => {
   const [form] = Form.useForm();
