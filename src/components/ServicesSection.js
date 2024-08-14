@@ -31,7 +31,7 @@ const ServicesSection = () => {
       <Row gutter={20} style={{color: 'var(--light'}}>
         {advantages.map((item, index) => <Col {...flexTwoColumnsConfig} key={index}>
           <h3 style={headerStyle}>{item.title}</h3>
-          {item.list.map((point, index) => <p><StarFilled style={{color: "var(--secondary"}}/> {point}</p>)}
+          {item.list.map((point, index) => <p key={index}><StarFilled style={{color: "var(--secondary"}}/> {point}</p>)}
         </Col>)}
       </Row>
     </div>

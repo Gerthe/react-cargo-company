@@ -42,7 +42,7 @@ const ContactForm = () => {
   };
 
   return <section className="wrapper">
-    <Row gutter={40} style={{fontSize: 18}}>
+    <Row gutter={20} style={{fontSize: 18}}>
       <Col {...flexTwoColumnsConfig}>
         <h2>Напишите нам <DoubleRightOutlined/></h2>
         <Image src={messageImage} width={250} preview={false} style={{
@@ -65,11 +65,11 @@ const ContactForm = () => {
           margin: '20px 0'
         }}>
           {isSubmitted ? (
-              <Result
-                status="success"
-                title="Сообщение отправлено!"
-                subTitle="Спасибо за ваше сообщение! Наш оператор свяжется с вами в ближайшее время, чтобы уточнить все детали вашего заказа."
-              />
+            <Result
+              status="success"
+              title="Сообщение отправлено!"
+              subTitle="Спасибо за ваше сообщение! Наш оператор свяжется с вами в ближайшее время, чтобы уточнить все детали вашего заказа."
+            />
           ) : (
             <Form form={form} onFinish={handleSubmit} layout="vertical">
               <Form.Item label="Ваше имя" name="name" rules={[
@@ -84,12 +84,13 @@ const ContactForm = () => {
                   size='large'
                 />
               </Form.Item>
-              <Form.Item label="Ваш номер телефона" name="phone"  rules={[
-                {
-                  required: true,
-                  message: 'Укажите свой телефонный номер для связи',
-                },
-              ]}>
+              <Form.Item label="Ваш номер телефона"
+                         name="phone"
+                         rules={[{
+                           required: true,
+                           message: 'Укажите свой телефонный номер для связи',
+                         }
+                         ]}>
                 <Input
                   placeholder="+7**********"
                   required
@@ -104,7 +105,14 @@ const ContactForm = () => {
                 />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" disabled={!submittable} onClick={handleSubmit}>Отправить сообщение</Button></Form.Item>
+                <Button
+                  type="primary"
+                  disabled={!submittable}
+                  onClick={handleSubmit}>
+                  Отправить
+                  сообщение
+                </Button>
+              </Form.Item>
             </Form>
           )}
         </div>

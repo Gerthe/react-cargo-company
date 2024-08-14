@@ -23,7 +23,7 @@ const VideoSection = () => {
             следите за обновлениями и будьте в курсе всех новостей и полезных советов по логистике и доставке из
             Китая.</p>
         </Col>
-        <Col {...flexTwoColumnsConfig}>
+        <Col {...flexTwoColumnsConfig} style={{width: 410, height: 770}}>
           <TikTok url={videoUrl}/>
         </Col>
       </Row>

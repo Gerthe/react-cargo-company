@@ -1,9 +1,11 @@
 import './Header.css';
-import {Flex, Menu as AntMenu, Space} from "antd";
+import {Col, Flex, Menu, Row, Grid} from "antd";
 import {MailTwoTone, PhoneFilled, PhoneTwoTone, TikTokOutlined} from "@ant-design/icons";
 import image from './../assets/085.svg';
 import Button from "./Button";
 import {useState} from "react";
+
+const {useBreakpoint} = Grid;
 
 const items = [
   {key: 'services', label: <a href='#services'>Услуги</a>},
@@ -13,54 +15,90 @@ const items = [
 
 const HeaderSection = () => {
   const [current, setCurrent] = useState();
+  const screens = useBreakpoint();
+  const showFull = screens.lg === true;
+  const iconSize = showFull ? 24 : 36;
+
   const onClick = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
   };
 
+  const socialLinks = [{
+    key: 'phone',
+    link: 'tel:+77761234588',
+    title: '+77761234588',
+    icon: <PhoneTwoTone twoToneColor="#7AC74F" style={{fontSize: iconSize}}/>
+  },
+    {
+      key: 'email',
+      link: 'mailto:+77761234588',
+      title: 'ashalmuhanova@gmail.com',
+      icon: <MailTwoTone twoToneColor="#7AC74F" style={{fontSize: iconSize}}/>
+    },
+    {
+      key: 'tiktok',
+      link: 'https://www.tiktok.com/@pekin_cargo_888',
+      title: 'Наш TikTok',
+      icon: <TikTokOutlined style={{color: "var(--secondary)", fontSize: iconSize}}/>,
+      linkProps: {
+        rel: "noreferrer", target: "_blank"
+      }
+    }]
+
+  const callButton = <Button size="large" type="primary"
+                             icon={<PhoneFilled/>}
+                             style={{
+                               fontSize: 20,
+                               marginTop: 8
+                             }}
+  >
+    Вам перезвонить?
+  </Button>
+
   return <header className="header">
     <div className="wrapper">
-      <img src={image} className="logo-accent" alt="Pekin Cargo 888"/>
-      <Flex justify="space-between">
-        <h1>Pekin<br/>Cargo<br/>888</h1>
-        <Flex vertical className="contact-info" gap="small" style={{
-          fontSize: 18,
-          fontWeight: 500
-        }}>
-          <Space>
-            <PhoneTwoTone twoToneColor="#7AC74F" style={{fontSize: 24}}/>
-            <a href="tel:+77761234588" style={{color: "var(--main)"}}>+77761234588</a>
-          </Space>
-          <Space>
-            <MailTwoTone twoToneColor="#7AC74F" style={{fontSize: 24}}/>
-            <a href="mailto:+77761234588" style={{color: "var(--main)"}}>ashalmuhanova@gmail.com</a>
-          </Space>
-          <Space>
-            <TikTokOutlined style={{color: "var(--secondary)", fontSize: 24}}/>
-            <a href="https://www.tiktok.com/@pekin_cargo_888" rel="noreferrer" target="_blank"
-               style={{color: "var(--main)"}}>Наш TikTok</a>
-          </Space>
-
-          <Button size="large" type="primary" icon={<PhoneFilled/>} style={{
-            fontSize: 20,
-            marginTop: 8
-          }}
+      <Row justify="space-between">
+        <Col>
+          <img src={image} className="logo-accent" alt="Pekin Cargo 888"/>
+          <h1>Pekin<br/>Cargo<br/>888</h1>
+        </Col>
+        <Col>
+          <Flex vertical={showFull}
+                className="contact-info"
+                gap="small"
+                style={{
+                  fontWeight: 500,
+                  fontSize: 18
+                }}
+                align={'flex-start'}
           >
-            Вам перезонить?
-          </Button>
-        </Flex>
-      </Flex>
+            {socialLinks.map(
+              (item) => <a key={item.key}
+                           href={item.link}
+                           style={{color: "var(--main)"}}
+                           {...(item.linkProps || [])}
+              >
+                {item.icon}
+                {showFull && (' ' + item.title)}
+              </a>)}
 
-      <AntMenu items={items} selectedKeys={[current]} onClick={onClick} mode="horizontal"
-               style={{
-                 textTransform: 'uppercase',
-                 fontSize: 20,
-                 lineHeight:2,
-                 fontWeight: "bold",
-                 borderBottom: 0,
-                 margin: '12px 0'
-               }
-               }
+            {showFull && callButton}
+          </Flex>
+
+        </Col>
+      </Row>
+
+      <Menu items={items} selectedKeys={[current]} onClick={onClick} mode="horizontal"
+            style={{
+              textTransform: 'uppercase',
+              fontSize: 20,
+              lineHeight: 2,
+              fontWeight: "bold",
+              borderBottom: 0,
+              margin: '12px 0'
+            }
+            }
       />
 
     </div>
