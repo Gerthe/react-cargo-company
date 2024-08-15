@@ -15,7 +15,7 @@ const faqQuestions = [
 ];
 
 const FaqSection = () => {
-  return <section className="wrapper">
+  return <section className="wrapper" id='faq'>
     <h2>Часто задаваемые вопросы (FAQ)</h2>
     <Flex vertical>
       {faqQuestions.map((item, index) =>

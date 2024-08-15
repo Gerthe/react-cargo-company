@@ -2,20 +2,26 @@ import {Col, Flex, Row, Space} from "antd";
 import {MailTwoTone, PhoneTwoTone, TikTokOutlined} from "@ant-design/icons";
 import {flexTwoColumnsConfig} from "../theme";
 
+const items = [
+  {key: 'services', label: 'Услуги'},
+  {key: 'advantages', label: 'Приемущества'},
+  {key: 'contact', label: 'Форма связи'},
+  {key: 'faq', label: 'FAQ'}
+]
+
 const FooterSection = () => {
   return <footer>
-    <Row className='wrapper'>
-      <Col {...flexTwoColumnsConfig}>
-        <nav>
-          <ul style={{listStyle: 'none', textAlign: 'left', padding: 0}}>
-            <li>Услуги</li>
-            <li>Складирование</li>
-            <li>Преимущества</li>
-            <li>FAQ</li>
-          </ul>
-        </nav>
+    <Row className='wrapper' justify="space-between">
+      <Col {...flexTwoColumnsConfig} style={{textAlign: 'left'}}>
+        {items.map(item =>
+          <div key={item.key}>
+            <a href={'#' + item.key} style={{color: "var(--secondary)", fontSize: 18, lineHeight: 1.5}}>
+              {item.label}
+            </a>
+          </div>)
+        }
       </Col>
-      <Col {...flexTwoColumnsConfig}>
+      <Col>
         <Flex vertical className="contact-info" gap="small" style={{
           fontSize: 18,
           fontWeight: 500
@@ -37,7 +43,8 @@ const FooterSection = () => {
       </Col>
     </Row>
 
-    <Row><Col span={24} style={{marginTop: 20}}>Pekin Cargo 888 ©{new Date().getFullYear()} Created by Gerthe</Col></Row>
+    <Row><Col span={24} style={{marginTop: 20}}>Pekin Cargo 888 ©{new Date().getFullYear()} Created by
+      Gerthe</Col></Row>
   </footer>
 };
 

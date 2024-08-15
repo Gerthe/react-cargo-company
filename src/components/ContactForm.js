@@ -41,7 +41,7 @@ const ContactForm = () => {
       .catch((error) => console.error('Error:', error));
   };
 
-  return <section className="wrapper">
+  return <section className="wrapper" id='contact'>
     <Row gutter={20} style={{fontSize: 18}}>
       <Col {...flexTwoColumnsConfig}>
         <h2>Напишите нам <DoubleRightOutlined/></h2>

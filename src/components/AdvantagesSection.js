@@ -11,7 +11,7 @@ const rowConfig = {
 };
 
 const AdvantagesSection = () => {
-  return <section className="advantages wrapper">
+  return <section className="advantages wrapper" id="advantages">
     <h2>Преимущества компании</h2>
     <Row {...rowConfig}>
       <Col {...flexTwoColumnsConfig}>

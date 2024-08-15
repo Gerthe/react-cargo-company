@@ -10,6 +10,7 @@ const {useBreakpoint} = Grid;
 const items = [
   {key: 'services', label: <a href='#services'>Услуги</a>},
   {key: 'advantages', label: <a href='#advantages'>Приемущества</a>},
+  {key: 'contact', label: <a href='#contact'>Связаться</a>},
   {key: 'faq', label: <a href='#faq'>FAQ</a>}
 ]
 
@@ -61,7 +62,7 @@ const HeaderSection = () => {
       <Row justify="space-between">
         <Col>
           <img src={image} className="logo-accent" alt="Pekin Cargo 888"/>
-          <h1>Pekin<br/>Cargo<br/>888</h1>
+          <div style={{position: 'relative'}}><h1>Pekin<br/>Cargo<br/>888</h1></div>
         </Col>
         <Col>
           <Flex vertical={showFull}
