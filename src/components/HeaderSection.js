@@ -48,6 +48,7 @@ const HeaderSection = () => {
     }]
 
   const callButton = <Button size="large" type="primary"
+                             href="#contact"
                              icon={<PhoneFilled/>}
                              style={{
                                fontSize: 20,
