@@ -1,6 +1,6 @@
 import {Col, Row} from "antd";
 import './ServicesSection.css';
-import {StarFilled} from "@ant-design/icons";
+import {DoubleRightOutlined, StarFilled} from "@ant-design/icons";
 import {flexTwoColumnsConfig} from "../theme";
 
 const headerStyle = {borderBottom: '5px solid var(--secondary', color: 'var(--accent)'};
@@ -27,7 +27,7 @@ const advantages = [
 const ServicesSection = () => {
   return <section id="services" className="styled-container wrapper">
     <div style={{padding: 20}}>
-      <h2 style={{color: 'var(--light)'}}>Наши Услуги</h2>
+      <h2 style={{color: 'var(--light)'}}>Наши Услуги <DoubleRightOutlined/></h2>
       <Row gutter={20} style={{color: 'var(--light'}}>
         {advantages.map((item, index) => <Col {...flexTwoColumnsConfig} key={index}>
           <h3 style={headerStyle}>{item.title}</h3>

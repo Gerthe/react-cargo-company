@@ -11,6 +11,7 @@ const items = [
   {key: 'services', label: <a href='#services'>Услуги</a>},
   {key: 'advantages', label: <a href='#advantages'>Приемущества</a>},
   {key: 'contact', label: <a href='#contact'>Связаться</a>},
+  {key: 'marketplaces', label: <a href='#marketplaces'>Как заказать</a>},
   {key: 'faq', label: <a href='#faq'>FAQ</a>}
 ]
 
@@ -21,7 +22,6 @@ const HeaderSection = () => {
   const iconSize = showFull ? 24 : 36;
 
   const onClick = (e) => {
-    console.log('click ', e);
     setCurrent(e.key);
   };
 
@@ -78,7 +78,7 @@ const HeaderSection = () => {
             {socialLinks.map(
               (item) => <a key={item.key}
                            href={item.link}
-                           style={{color: "var(--main)"}}
+                           style={{color: "var(--main)", padding: showFull ? 0 : 10}}
                            {...(item.linkProps || [])}
               >
                 {item.icon}

@@ -4,6 +4,7 @@ export const theme = {
     colorPrimary: '#201E50',
     colorBgBase: '#eef0f2',
     borderRadius: 3,
+    fontSize: 18
   },
   components: {
     Button: {
@@ -36,7 +37,7 @@ export const flexTwoColumnsConfig = {
 
 export const headerStyle = {
   textAlign: 'center',
-  height:278,
+  height:280,
   lineHeight: '24px',
   backgroundColor: 'var(--light)',
   padding: '24px 0'

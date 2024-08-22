@@ -10,6 +10,7 @@ import ContactForm from "./components/ContactForm";
 import FaqSection from "./components/FaqSection";
 import FooterSection from "./components/FooterSection";
 import VideoSection from "./components/VideoSection";
+import MarketplacesSection from "./components/MarketplacesSection";
 
 const {Header, Footer, Content} = Layout;
 
@@ -34,6 +35,7 @@ function App() {
             <AdvantagesSection/>
             <VideoSection/>
             <ContactForm/>
+            <MarketplacesSection/>
             <FaqSection/>
           </Content>
 
