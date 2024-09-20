@@ -4,17 +4,17 @@ export const theme = {
     colorPrimary: '#201E50',
     colorBgBase: '#eef0f2',
     borderRadius: 3,
-    fontSize: 18
+    fontSize: 18,
   },
   components: {
     Button: {
       primaryColor: '#F7B32B',
     },
     Menu: {
-      activeBarHeight: 5
-    }
-  }
-}
+      activeBarHeight: 5,
+    },
+  },
+};
 
 export const flexTwoColumnsConfig = {
   xs: {
@@ -32,19 +32,19 @@ export const flexTwoColumnsConfig = {
   xl: {
     flex: '50%',
   },
-  style: {fontSize: 18},
-}
+  style: { fontSize: 18 },
+};
 
 export const headerStyle = {
   textAlign: 'center',
-  height:280,
+  height: 280,
   lineHeight: '24px',
   backgroundColor: 'var(--light)',
-  padding: '24px 0'
+  padding: '24px 0',
 };
 
 export const footerStyle = {
   backgroundColor: 'var(--main)',
   color: 'var(--secondary)',
-  textAlign: 'center'
+  textAlign: 'center',
 };
