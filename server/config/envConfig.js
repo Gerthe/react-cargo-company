@@ -18,8 +18,6 @@ const env = {
   JWT_SECRET: process.env.JWT_SECRET || 'your_jwt_secret',
 };
 
-console.log(env);
-
 if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
   throw new Error(
     'Please provide both TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in the .env file.'

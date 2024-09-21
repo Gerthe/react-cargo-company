@@ -13,22 +13,29 @@ const userModel = {
       throw new Error('Error inserting user: ' + err.message);
     }
   },
-  getUserById: (id) =>
-    new Promise((resolve, reject) => {
-      const query = 'SELECT * FROM users WHERE id = ?';
-      db.query(query, [id], (err, results) => {
-        if (err) reject(err);
-        resolve(results[0]);
-      });
-    }),
-  getAllUsers: () =>
-    new Promise((resolve, reject) => {
-      const query = 'SELECT * FROM users';
-      db.query(query, (err, results) => {
-        if (err) reject(err);
-        resolve(results[0]);
-      });
-    }),
+  getUserById: async (id) => {
+    try {
+      const connection = await db.getConnection();
+      const [results] = await connection.query(
+        'SELECT * FROM users WHERE id = ?',
+        [id]
+      );
+      return results[0];
+    } catch (err) {
+      throw new Error('Error getting user: ' + err.message);
+    }
+  },
+  getAllUsers: async () => {
+    try {
+      const connection = await db.getConnection();
+      const [results] = await connection.query(
+        'SELECT * FROM users WHERE role = "user"'
+      );
+      return results;
+    } catch (err) {
+      throw new Error('Error getting users: ' + err.message);
+    }
+  },
 };
 
 export default userModel;

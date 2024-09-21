@@ -1,13 +1,13 @@
 import { Col, Image, Row, Space, Typography, Grid } from 'antd';
-import { flexTwoColumnsConfig } from '../theme';
+import { flexTwoColumnsConfig } from '../../theme';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import React from 'react';
 
-import taobaoLogo from '../assets/taobao.png';
-import poisonLogo from '../assets/dewu.png';
-import s1688Logo from '../assets/1688.png';
-import pinduoduoLogo from '../assets/Pinduoduologo.png';
-import screenShot from '../assets/screenshot.jpg';
+import taobaoLogo from '../../assets/taobao.png';
+import poisonLogo from '../../assets/dewu.png';
+import s1688Logo from '../../assets/1688.png';
+import pinduoduoLogo from '../../assets/Pinduoduologo.png';
+import screenShot from '../../assets/screenshot.jpg';
 
 const { useBreakpoint } = Grid;
 const logoSize = 60;
