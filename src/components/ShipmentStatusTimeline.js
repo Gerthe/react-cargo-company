@@ -1,34 +1,36 @@
 import React from 'react';
 import { Timeline } from 'antd';
 import PropTypes from 'prop-types';
+import { SHIPMENT_STATUSES, SHIPMENT_STATUSES_ORDERED } from '../constants';
 
 const ShipmentStatusTimeline = ({ shipmentStatus }) => {
+  const getStatusColor = (status) => {
+    if (
+      SHIPMENT_STATUSES_ORDERED.indexOf(shipmentStatus) >=
+      SHIPMENT_STATUSES_ORDERED.indexOf(status)
+    ) {
+      if (
+        status === SHIPMENT_STATUSES.TRANSIT &&
+        shipmentStatus === SHIPMENT_STATUSES.TRANSIT
+      ) {
+        return 'blue';
+      }
+      return 'green';
+    }
+    return 'gray';
+  };
+
+  const timelineStatusesItems = SHIPMENT_STATUSES_ORDERED.map((status) => {
+    return {
+      children: status,
+      color: getStatusColor(status),
+    };
+  });
+
   return (
     <div>
       <h3>{shipmentStatus}</h3>
-      <Timeline
-        items={[
-          {
-            color: 'green',
-            children: 'Получен на складе в Китае',
-          },
-          {
-            color: 'green',
-            children: 'Отправлен со склада в Китае',
-          },
-          {
-            children: 'Транзит',
-          },
-          {
-            color: 'gray',
-            children: 'На складе в Алматы',
-          },
-          {
-            color: 'gray',
-            children: 'Доставлен',
-          },
-        ]}
-      />
+      <Timeline items={timelineStatusesItems} />
     </div>
   );
 };
