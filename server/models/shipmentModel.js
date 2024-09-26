@@ -1,12 +1,21 @@
 import db from '../config/db.js';
 
+const SHIPMENT_STATUSES = {
+  CREATED: 'created',
+  CHINA_WAREHOUSE: 'china_warehouse',
+  CHINA_WAREHOUSE_SENT: 'china_warehouse_sent',
+  TRANSIT: 'transit',
+  ALMATY_WAREHOUSE: 'almaty_warehouse',
+  DELIVERED: 'delivered',
+};
+
 const shipmentModel = {
   createShipment: async (userId, code, description) => {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.query(
-        'INSERT INTO shipments (user_id, tracking_code, description) VALUES (?, ?, ?)',
-        [userId, code, description]
+        'INSERT INTO shipments (user_id, tracking_code, description, status) VALUES (?, ?, ?)',
+        [userId, code, description, SHIPMENT_STATUSES.CREATED]
       );
       return { id: results.insertId, code };
     } catch (err) {
@@ -49,11 +58,11 @@ const shipmentModel = {
   updateShipmentStatus: async (id, status) => {
     try {
       const connection = await db.getConnection();
-      const [results, fields] = await connection.query(
+      const [results] = await connection.query(
         'UPDATE shipments SET status = ? WHERE id = ?',
         [status, id]
       );
-      console.log(results, fields);
+
       return results;
     } catch (err) {
       throw new Error('Error updating shipment status: ' + err.message);

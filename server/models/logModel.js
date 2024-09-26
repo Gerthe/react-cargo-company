@@ -5,7 +5,7 @@ const logModel = {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.execute(
-        'INSERT INTO logs (shipment_id, admin_id, previous_status, new_status) VALUES (?, ?, ?, ?)',
+        'INSERT INTO admin_logs (shipment_id, admin_id, previous_status, new_status) VALUES (?, ?, ?, ?)',
         [shipmentId, adminId, prevStatus, newStatus]
       );
       return results.insertId;
@@ -17,7 +17,7 @@ const logModel = {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.query(
-        'SELECT * FROM logs WHERE shipment_id = ?',
+        'SELECT * FROM admin_logs WHERE shipment_id = ?',
         [shipmentId]
       );
       return results;
@@ -28,7 +28,7 @@ const logModel = {
   getAllLogs: async () => {
     try {
       const connection = await db.getConnection();
-      const [results] = await connection.query('SELECT * FROM logs');
+      const [results] = await connection.query('SELECT * FROM admin_logs');
       return results;
     } catch (err) {
       throw new Error('Error getting logs: ' + err.message);

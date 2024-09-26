@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import DashboardLayout from './pages/DashboardLayout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import AdminPage from './pages/AdminPage/AdminPage';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,16 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <DashboardPage />,
+      },
+    ],
+  },
+  {
+    element: <DashboardLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: 'admin',
+        element: <AdminPage />,
       },
     ],
   },

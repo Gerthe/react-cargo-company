@@ -1,25 +1,31 @@
 import React from 'react';
 import { Card } from 'antd';
 import ShipmentStatusTimeline from '../components/ShipmentStatusTimeline';
+import { SHIPMENT_STATUSES } from '../constants';
+
+const getRandomShipmentStatus = () => {
+  const statuses = Object.values(SHIPMENT_STATUSES);
+  return statuses[Math.floor(Math.random() * statuses.length)];
+};
+
+const getRandomTrackingCode = () => {
+  return Math.random().toString(36).substring(7).toUpperCase();
+};
+
+const getRandomShipmentArray = (count) => {
+  const shipments = [];
+  for (let i = 0; i < count; i++) {
+    shipments.push({
+      trackingCode: getRandomTrackingCode(),
+      description: 'This is a test shipment',
+      status: getRandomShipmentStatus(),
+    });
+  }
+  return shipments;
+};
 
 const DashboardPage = () => {
-  const shipments = [
-    {
-      trackingCode: '123456',
-      description: 'This is a test shipment',
-      status: 'IN_TRANSIT',
-    },
-    {
-      trackingCode: '123457',
-      description: 'This is a test shipment',
-      status: 'DELIVERED',
-    },
-    {
-      trackingCode: '123458',
-      description: 'This is a test shipment',
-      status: 'CHINA_WAREHOUSE',
-    },
-  ];
+  const shipments = getRandomShipmentArray(5);
   return (
     <div>
       <h1>Dashboard Page</h1>

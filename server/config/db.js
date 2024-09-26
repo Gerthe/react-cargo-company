@@ -9,7 +9,6 @@ const db = {
   getConnection: async () => {
     if (!connection) {
       try {
-        console.log(process.env);
         connection = await mysql.createConnection({
           host: process.env.DB_HOST,
           user: process.env.DB_USER,
