@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
-import axios from 'axios';
 import dayjs from 'dayjs';
+import shipmentApi from '../../api/shipment.api';
 
 const columns = [
   { title: 'ID', dataIndex: 'id' },
@@ -27,8 +27,9 @@ const ShipmentsTable = () => {
   useEffect(() => {
     const fetchShipments = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/shipments');
-        setShipments(response.data);
+        setLoading(true);
+        const response = await shipmentApi.getShipments();
+        setShipments(response);
       } catch (err) {
         console.error(err);
       } finally {

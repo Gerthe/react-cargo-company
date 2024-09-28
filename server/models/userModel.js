@@ -16,8 +16,9 @@ const userModel = {
   getUserById: async (id) => {
     try {
       const connection = await db.getConnection();
+      const publicColumns = ['id', 'phone', 'role'];
       const [results] = await connection.query(
-        'SELECT * FROM users WHERE id = ?',
+        `SELECT ${publicColumns.join(', ')} FROM users WHERE id = ?`,
         [id]
       );
       return results[0];
@@ -34,6 +35,18 @@ const userModel = {
       return results;
     } catch (err) {
       throw new Error('Error getting users: ' + err.message);
+    }
+  },
+  getUserByPhone: async (phone) => {
+    try {
+      const connection = await db.getConnection();
+      const [results] = await connection.query(
+        'SELECT * FROM users WHERE phone = ?',
+        [phone]
+      );
+      return results[0];
+    } catch (err) {
+      throw new Error('Error getting user: ' + err.message);
     }
   },
 };

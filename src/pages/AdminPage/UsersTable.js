@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 import dayjs from 'dayjs';
+import usersApi from '../../api/users.api';
 
 const columns = [
   { title: 'ID', dataIndex: 'id' },
@@ -21,8 +22,7 @@ const UsersTable = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/users');
-        const data = await response.json();
+        const data = await usersApi.getUsers();
         setUsers(data);
       } catch (err) {
         console.error(err);

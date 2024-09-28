@@ -6,6 +6,10 @@ import DashboardLayout from './pages/DashboardLayout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import AdminPage from './pages/AdminPage/AdminPage';
+import RegisterPage from './pages/RegisterPage';
+import PrivateRoute from './components/PrivateRoute';
+
+//TODO: private routes for dashboard and admin
 
 const router = createBrowserRouter([
   {
@@ -23,11 +27,15 @@ const router = createBrowserRouter([
       },
       {
         path: 'register',
-        element: <LoginPage />,
+        element: <RegisterPage />,
       },
       {
         path: 'dashboard',
-        element: <DashboardPage />,
+        element: (
+          <PrivateRoute>
+            <DashboardPage />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -37,7 +45,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'admin',
-        element: <AdminPage />,
+        element: (
+          <PrivateRoute>
+            <AdminPage />
+          </PrivateRoute>
+        ),
       },
     ],
   },
