@@ -8,7 +8,7 @@ export const registerUser = async (req, res) => {
     const existingUser = await userModel.getUserByPhone(phone);
 
     if (existingUser) {
-      return res.status(409).json({ message: 'User already exists' });
+      return res.status(409).json({ message: 'USER_EXISTS' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -53,20 +53,26 @@ export const login = async (req, res) => {
     const user = await userModel.getUserByPhone(phone);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'INVALID_PHONE' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid password' });
+      return res.status(400).json({ message: 'INVALID_CREDENTIALS' });
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: '24h',
     });
 
-    res.json({ token, user });
+    const userPublic = {
+      id: user.id,
+      phone: user.phone,
+      role: user.role,
+    };
+
+    res.json({ token, user: userPublic });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

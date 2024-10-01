@@ -5,7 +5,7 @@ const logModel = {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.execute(
-        'INSERT INTO admin_logs (shipment_id, admin_id, previous_status, new_status) VALUES (?, ?, ?, ?)',
+        'INSERT INTO admin_logs (shipmentId, adminId, previousStatus, newStatus) VALUES (?, ?, ?, ?)',
         [shipmentId, adminId, prevStatus, newStatus]
       );
       return results.insertId;
@@ -17,7 +17,7 @@ const logModel = {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.query(
-        'SELECT * FROM admin_logs WHERE shipment_id = ?',
+        'SELECT * FROM admin_logs WHERE shipmentId = ?',
         [shipmentId]
       );
       return results;

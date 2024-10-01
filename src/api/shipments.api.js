@@ -4,9 +4,10 @@ import axios from 'axios';
 const baseUrl = 'http://localhost:3000/';
 const apiUrl = 'api/shipments';
 
-const shipmentApi = {
-  getShipments: async () => {
+const shipmentsApi = {
+  getShipments: async (filter) => {
     const response = await axios.get(apiUrl, {
+      params: filter,
       headers: getHeaders(),
       baseURL: baseUrl,
     });
@@ -30,6 +31,12 @@ const shipmentApi = {
     });
     return response.data;
   },
+  getShipmentWithStatus: async (status) => {
+    const response = await axios.get(`${apiUrl}/status/${status}`, {
+      headers: getHeaders(),
+    });
+    return response.data;
+  },
 };
 
-export default shipmentApi;
+export default shipmentsApi;

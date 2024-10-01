@@ -1,0 +1,20 @@
+.header-logo {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    text-transform: capitalize;
+    height: 40px;
+    margin: 10px 10px;
+    line-height: 40px;
+    display: flex;
+}
+
+.header-logo__box {
+    width: 30px;
+    height: 30px;
+    border: 5px solid var(--accent);
+    text-align: left;
+    box-sizing: content-box;
+    display: inline-block;
+    margin-right: 10px;
+}

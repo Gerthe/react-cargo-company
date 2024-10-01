@@ -41,14 +41,14 @@ const RegisterPage = () => {
           <p>Зарегитрируйтесь чтобы отслеживать статус ваших посылок</p>
           <Form onFinish={handleSubmit} form={form} style={{ maxWidth: 500 }}>
             <Form.Item label="Имя" name="name" rules={[{ required: true }]}>
-              <Input />
+              <Input maxLength={20} minLength={2} />
             </Form.Item>
             <Form.Item
               label="Телефон"
               name="phone"
               rules={[{ required: true }]}
             >
-              <Input />
+              <Input addonBefore="+7" maxLength={10} minLength={10} />
             </Form.Item>
             <Form.Item
               label="Пароль"

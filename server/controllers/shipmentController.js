@@ -1,5 +1,6 @@
 import shipmentModel from '../models/shipmentModel.js';
 import logModel from '../models/logModel.js';
+import userModel from '../models/userModel.js';
 
 export const createShipment = async (req, res) => {
   const { userId, code, description } = req.body;
@@ -44,7 +45,18 @@ export const getShipmentsByUserId = async (req, res) => {
 };
 export const getAllShipments = async (req, res) => {
   try {
-    const shipments = await shipmentModel.getAllShipments();
+    const userId = req.user.id;
+    const user = await userModel.getUserById(userId);
+    const filter = req.query;
+    let shipments;
+
+    if (user.role === 'admin') {
+      shipments = await shipmentModel.getAllShipments(filter);
+    } else {
+      filter.userId = userId;
+      shipments = await shipmentModel.getShipments(filter);
+    }
+
     if (shipments) {
       res.json(shipments);
     } else {
@@ -71,6 +83,28 @@ export const updateShipmentStatus = async (req, res) => {
       });
     }
     res.json(results);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getShipmentsByStatus = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { status } = req.params;
+    let shipments;
+
+    if (status === 'active') {
+      shipments = await shipmentModel.getUserActiveShipments(userId);
+    } else {
+      shipments = await shipmentModel.getUserInactiveShipments(userId);
+    }
+
+    if (shipments) {
+      res.json(shipments);
+    } else {
+      res.status(404).json({ message: 'Shipments not found' });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

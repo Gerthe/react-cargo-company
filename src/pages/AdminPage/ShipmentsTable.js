@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import dayjs from 'dayjs';
-import shipmentApi from '../../api/shipment.api';
+import shipmentsApi from '../../api/shipments.api';
 
 const columns = [
   { title: 'ID', dataIndex: 'id' },
@@ -28,7 +28,7 @@ const ShipmentsTable = () => {
     const fetchShipments = async () => {
       try {
         setLoading(true);
-        const response = await shipmentApi.getShipments();
+        const response = await shipmentsApi.getShipments();
         setShipments(response);
       } catch (err) {
         console.error(err);

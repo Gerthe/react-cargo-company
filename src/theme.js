@@ -5,10 +5,13 @@ export const theme = {
     colorBgBase: '#eef0f2',
     borderRadius: 3,
     fontSize: 18,
+    layoutHeaderBg: '#201E50',
   },
   components: {
     Button: {
       primaryColor: '#F7B32B',
+      defaultHoverColor: '#F7B32B',
+      defaultHoverBorderColor: '#F7B32B',
     },
     Menu: {
       activeBarHeight: 5,

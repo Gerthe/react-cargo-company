@@ -25,6 +25,13 @@ const authApi = {
     });
     return response.data;
   },
+  logout: () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  },
+  isLogged: () => {
+    return !!localStorage.getItem('token');
+  },
 };
 
 export default authApi;

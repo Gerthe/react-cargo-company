@@ -66,7 +66,7 @@ const HeaderSection = () => {
   ];
 
   const loginLink = (
-    <Link to={'/dashboard/login'}>
+    <Link to={'/login'}>
       Войти <LoginOutlined />
     </Link>
   );

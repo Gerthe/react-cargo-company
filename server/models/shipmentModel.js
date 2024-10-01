@@ -14,7 +14,7 @@ const shipmentModel = {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.query(
-        'INSERT INTO shipments (user_id, tracking_code, description, status) VALUES (?, ?, ?)',
+        'INSERT INTO shipments (userId, trackingCode, description, status) VALUES (?, ?, ?)',
         [userId, code, description, SHIPMENT_STATUSES.CREATED]
       );
       return { id: results.insertId, code };
@@ -34,22 +34,40 @@ const shipmentModel = {
       throw new Error('Error getting shipment: ' + err.message);
     }
   },
-  getAllShipmentsByUserId: async (userId) => {
+  getShipments: async (filter) => {
     try {
       const connection = await db.getConnection();
+      const filterString = filter
+        ? Object.keys(filter)
+            .map((key) => ` ${key} = ?`)
+            .join(' AND ')
+        : '';
+      const filterValues = filter ? Object.values(filter) : [];
+
       const [results] = await connection.query(
-        'SELECT * FROM shipments WHERE user_id = ?',
-        [userId]
+        'SELECT * FROM shipments' +
+          (filterString ? ' WHERE' + filterString : ''),
+        [...filterValues]
       );
+
       return results;
     } catch (err) {
       throw new Error('Error getting shipments: ' + err.message);
     }
   },
-  getAllShipments: async () => {
+  getAllShipments: async (filter) => {
     try {
       const connection = await db.getConnection();
-      const [results] = await connection.query('SELECT * FROM shipments');
+      const filterString = filter
+        ? Object.keys(filter)
+            .map((key) => ` ${key} = ?`)
+            .join(' AND ')
+        : '';
+      const filterValues = filter ? Object.values(filter) : [];
+      const [results] = await connection.query(
+        'SELECT * FROM shipments' + filterString,
+        [filterValues]
+      );
       return results;
     } catch (err) {
       throw new Error('Error getting shipments: ' + err.message);
@@ -66,6 +84,33 @@ const shipmentModel = {
       return results;
     } catch (err) {
       throw new Error('Error updating shipment status: ' + err.message);
+    }
+  },
+  getUserActiveShipments: async (userId) => {
+    try {
+      const connection = await db.getConnection();
+      const [results] = await connection.query(
+        'SELECT * FROM shipments WHERE status != ? AND userId = ?',
+        [SHIPMENT_STATUSES.DELIVERED, userId]
+      );
+      //TODO canceled status
+
+      return results;
+    } catch (err) {
+      throw new Error('Error getting active shipments: ' + err.message);
+    }
+  },
+  getUserInactiveShipments: async (userId) => {
+    try {
+      const connection = await db.getConnection();
+      const [results] = await connection.query(
+        'SELECT * FROM shipments WHERE status = ? AND userId = ?',
+        [SHIPMENT_STATUSES.DELIVERED, userId]
+      );
+
+      return results;
+    } catch (err) {
+      throw new Error('Error getting inactive shipments: ' + err.message);
     }
   },
 };
