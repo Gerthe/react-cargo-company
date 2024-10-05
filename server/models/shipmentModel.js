@@ -10,14 +10,19 @@ const SHIPMENT_STATUSES = {
 };
 
 const shipmentModel = {
-  createShipment: async (userId, code, description) => {
+  createShipment: async (userId, trackingCode, description) => {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.query(
-        'INSERT INTO shipments (userId, trackingCode, description, status) VALUES (?, ?, ?)',
-        [userId, code, description, SHIPMENT_STATUSES.CREATED]
+        'INSERT INTO shipments (userId, trackingCode, description, status) VALUES (?, ?, ?, ?)',
+        [userId, trackingCode, description, SHIPMENT_STATUSES.CREATED]
       );
-      return { id: results.insertId, code };
+      return {
+        id: results.insertId,
+        trackingCode,
+        description,
+        status: SHIPMENT_STATUSES.CREATED,
+      };
     } catch (err) {
       throw new Error('Error inserting shipment: ' + err.message);
     }
@@ -46,7 +51,8 @@ const shipmentModel = {
 
       const [results] = await connection.query(
         'SELECT * FROM shipments' +
-          (filterString ? ' WHERE' + filterString : ''),
+          (filterString ? ' WHERE' + filterString : '') +
+          ' ORDER updatedAt DESC',
         [...filterValues]
       );
 
@@ -65,7 +71,7 @@ const shipmentModel = {
         : '';
       const filterValues = filter ? Object.values(filter) : [];
       const [results] = await connection.query(
-        'SELECT * FROM shipments' + filterString,
+        'SELECT * FROM shipments' + filterString + ' ORDER createdAt DESC',
         [filterValues]
       );
       return results;
@@ -90,7 +96,7 @@ const shipmentModel = {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.query(
-        'SELECT * FROM shipments WHERE status != ? AND userId = ?',
+        'SELECT * FROM shipments WHERE status != ? AND userId = ? ORDER BY updatedAt DESC',
         [SHIPMENT_STATUSES.DELIVERED, userId]
       );
       //TODO canceled status
@@ -104,13 +110,26 @@ const shipmentModel = {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.query(
-        'SELECT * FROM shipments WHERE status = ? AND userId = ?',
+        'SELECT * FROM shipments WHERE status = ? AND userId = ? ORDER BY updatedAt DESC',
         [SHIPMENT_STATUSES.DELIVERED, userId]
       );
 
       return results;
     } catch (err) {
       throw new Error('Error getting inactive shipments: ' + err.message);
+    }
+  },
+  deleteShipment: async (id) => {
+    try {
+      const connection = await db.getConnection();
+      const [results] = await connection.query(
+        'DELETE FROM shipments WHERE id = ?',
+        [id]
+      );
+
+      return results;
+    } catch (err) {
+      throw new Error('Error deleting shipment: ' + err.message);
     }
   },
 };

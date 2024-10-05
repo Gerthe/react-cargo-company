@@ -3,11 +3,12 @@ import logModel from '../models/logModel.js';
 import userModel from '../models/userModel.js';
 
 export const createShipment = async (req, res) => {
-  const { userId, code, description } = req.body;
+  const { trackingCode, description } = req.body;
   try {
+    const userId = req.user.id;
     const newShipment = await shipmentModel.createShipment(
       userId,
-      code,
+      trackingCode,
       description
     );
     res.status(201).json(newShipment);
@@ -105,6 +106,33 @@ export const getShipmentsByStatus = async (req, res) => {
     } else {
       res.status(404).json({ message: 'Shipments not found' });
     }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const deleteShipment = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const shipment = await shipmentModel.getShipmentById(id);
+    const userId = req.user.id;
+    const user = await userModel.getUserById(userId);
+
+    if (user.role !== 'admin' && shipment.userId !== userId) {
+      return res
+        .status(403)
+        .json({ message: 'You are not authorized to delete this shipment' });
+    }
+
+    if (shipment.status !== 'created') {
+      return res
+        .status(403)
+        .json({ message: 'You are not authorized to delete this shipment' });
+    }
+
+    const results = await shipmentModel.deleteShipment(id);
+
+    res.json(results);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

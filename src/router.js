@@ -8,6 +8,7 @@ import DashboardPage from './pages/Dashboard/DashboardPage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import RegisterPage from './pages/RegisterPage';
 import PrivateRoute from './components/PrivateRoute';
+import AddShipmentPage from './pages/Dashboard/AddShipmentPage';
 
 //TODO: private routes for dashboard and admin
 
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <DashboardPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'add-shipment',
+        element: (
+          <PrivateRoute>
+            <AddShipmentPage />
           </PrivateRoute>
         ),
       },

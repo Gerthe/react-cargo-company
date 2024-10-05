@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Input } from 'antd';
+import { Card, Input, Button } from 'antd';
 import ShipmentStatusTimeline from '../../components/ShipmentStatusTimeline';
 import shipmentsApi from '../../api/shipments.api';
-import Button from '../../components/Button';
+import { DeleteOutlined } from '@ant-design/icons';
+import { SHIPMENT_STATUSES } from '../../constants';
 
 const ShipmentsList = () => {
   const [shipments, setShipments] = useState([]);
@@ -16,6 +17,15 @@ const ShipmentsList = () => {
   const handleSearch = (e) => {
     const { value } = e.target;
     setSearchValue(value);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await shipmentsApi.deleteShipment(id);
+      setShipments((prev) => prev.filter((shipment) => shipment.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
@@ -54,6 +64,18 @@ const ShipmentsList = () => {
       {filteredShipments?.map((shipment) => (
         <Card
           key={shipment.trackingCode}
+          extra={
+            shipment.status === SHIPMENT_STATUSES.CREATED ? (
+              <Button
+                shape="circle"
+                variant="filled"
+                onClick={() => handleDelete(shipment.id)}
+                icon={<DeleteOutlined />}
+              />
+            ) : (
+              ''
+            )
+          }
           title={
             <div>
               <h2>{shipment.trackingCode}</h2>

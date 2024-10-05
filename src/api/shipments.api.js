@@ -37,6 +37,12 @@ const shipmentsApi = {
     });
     return response.data;
   },
+  deleteShipment: async (id) => {
+    const response = await axios.delete(`${apiUrl}/${id}`, {
+      headers: getHeaders(),
+    });
+    return response.data;
+  },
 };
 
 export default shipmentsApi;
