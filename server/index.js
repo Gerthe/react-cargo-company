@@ -5,6 +5,8 @@ import userRoutes from './routes/userRoutes.js';
 import shipmentRoutes from './routes/shipmentRoutes.js';
 import telegramBotController from './controllers/telegramBotController.js';
 import logRoutes from './routes/logRoutes.js';
+import env from './config/envConfig.js';
+import cors from 'cors';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,6 +16,12 @@ const port = process.env.PORT || 5000;
 
 // Middleware to parse JSON data from POST requests
 app.use(express.json());
+app.use(
+  cors({
+    origin: env.BASE_URL, // Укажите здесь URL вашего фронтенда
+    credentials: true,
+  })
+);
 
 // Route to handle form submissions
 app.post('/send-message', telegramBotController.sendTelegramMessage);

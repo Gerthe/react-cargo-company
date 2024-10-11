@@ -16,6 +16,7 @@ const env = {
   TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
   TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
   JWT_SECRET: process.env.JWT_SECRET || 'your_jwt_secret',
+  BASE_URL: process.env.BASE_URL || 'http://localhost:3000',
 };
 
 if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
