@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Input, Result, message } from 'antd';
 import Button from '../components/Button';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import authApi from '../api/auth.api';
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
@@ -16,10 +16,7 @@ const RegisterPage = () => {
 
   const handleSubmit = async (values) => {
     try {
-      const register = await axios.post(
-        'http://localhost:3000/api/users/register',
-        values
-      );
+      const register = await authApi.register(values.phone, values.password);
       if (register) {
         setIsRegistered(true);
       }
