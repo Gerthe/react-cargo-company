@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Input, Button } from 'antd';
+import { Card, Input, Button, Empty } from 'antd';
 import ShipmentStatusTimeline from '../../components/ShipmentStatusTimeline';
 import shipmentsApi from '../../api/shipments.api';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -55,7 +55,7 @@ const ShipmentsList = () => {
           }}
         >
           <Input.Search
-            placeholder="Поиск по номеру отправления"
+            placeholder="Поиск по номеру отслеживания"
             onChange={handleSearch}
           />
         </div>
@@ -84,6 +84,7 @@ const ShipmentsList = () => {
           }
           style={{
             width: '100%',
+            marginBottom: 20,
           }}
         >
           <ShipmentStatusTimeline shipmentStatus={shipment.status} />
@@ -91,10 +92,14 @@ const ShipmentsList = () => {
       ))}
 
       {!shipments.length && (
-        <div>
-          <p>Нет отправлений</p>
-          <Button type="primary">Добавить отправление</Button>
-        </div>
+        <Empty
+          description={
+            <>
+              <p>Нет отправлений</p>
+              <Button type="primary">Добавить номер отслеживания</Button>
+            </>
+          }
+        />
       )}
     </div>
   );

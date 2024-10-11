@@ -3,16 +3,7 @@ import { Table } from 'antd';
 import dayjs from 'dayjs';
 import usersApi from '../../api/users.api';
 
-const columns = [
-  { title: 'ID', dataIndex: 'id' },
-  { title: 'phone', dataIndex: 'phone' },
-  { title: 'role', dataIndex: 'role' },
-  {
-    title: 'createdAt',
-    dataIndex: 'created_at',
-    render: (date) => dayjs(date).format('DD/MM/YYYY'),
-  },
-];
+const { Column } = Table;
 
 const UsersTable = () => {
   const [users, setUsers] = React.useState([]);
@@ -36,12 +27,21 @@ const UsersTable = () => {
 
   return (
     <div>
-      <Table
-        columns={columns}
-        dataSource={users}
-        loading={loading}
-        rowKey="phone"
-      />
+      <Table dataSource={users} loading={loading} rowKey="phone">
+        <Column title="ID" dataIndex="id" key="id" />
+        <Column
+          title="Телефон"
+          dataIndex="phone"
+          key="phone"
+          render={(phone) => '+7' + phone}
+        />
+        <Column
+          title="Создан"
+          dataIndex="created_at"
+          key="createdAt"
+          render={(date) => dayjs(date).format('DD/MM/YYYY')}
+        />
+      </Table>
     </div>
   );
 };

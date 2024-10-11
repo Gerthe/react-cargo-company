@@ -1,20 +1,20 @@
 import axios from 'axios';
 import { getHeaders } from './index.api';
+import { API_URL } from '../config';
 
-const baseUrl = 'http://localhost:3000/';
-const apiUrl = 'api/users';
+const apiName = 'users';
 
 const usersApi = {
   getUsers: async () => {
-    const response = await axios.get(apiUrl, {
-      baseURL: baseUrl,
+    const response = await axios.get(apiName, {
+      baseURL: API_URL,
       headers: getHeaders(),
     });
     return response.data;
   },
   getUserById: async (id) => {
-    const response = await axios.get(`${apiUrl}/${id}`, {
-      baseURL: baseUrl,
+    const response = await axios.get(`${apiName}/${id}`, {
+      baseURL: API_URL,
       headers: getHeaders(),
     });
     return response.data;

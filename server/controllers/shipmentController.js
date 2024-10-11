@@ -31,39 +31,49 @@ export const getShipment = async (req, res) => {
   }
 };
 
-export const getShipmentsByUserId = async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const shipments = await shipmentModel.getAllShipmentsByUserId(userId);
-    if (shipments) {
-      res.json(shipments);
-    } else {
-      res.status(404).json({ message: 'Shipments not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 export const getAllShipments = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const user = await userModel.getUserById(userId);
-    const filter = req.query;
-    let shipments;
+    // Extract query parameters
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const sortBy = req.query.sortBy || 'createdAt';
+    const order = req.query.order || 'DESC';
 
-    if (user.role === 'admin') {
-      shipments = await shipmentModel.getAllShipments(filter);
-    } else {
-      filter.userId = userId;
-      shipments = await shipmentModel.getShipments(filter);
-    }
+    // Extract filters (assuming filter parameters are sent as filter[key]=value)
+    const filters = req.query.filter || {};
 
-    if (shipments) {
-      res.json(shipments);
-    } else {
-      res.status(404).json({ message: 'Shipments not found' });
-    }
+    // Prepare pagination and sorting objects
+    const pagination = { page, limit, sortBy, order };
+    const sorting = { sortBy, order };
+
+    // Extract search value
+    const searchValue = req.query.search || '';
+
+    // Fetch shipments based on filters, pagination, and sorting
+    const shipments = await shipmentModel.getShipments(
+      filters,
+      pagination,
+      sorting,
+      searchValue
+    );
+
+    // Fetch total count for pagination
+    const total = await shipmentModel.getTotalCount(filters, searchValue);
+    const totalPages = Math.ceil(total / limit);
+
+    // Respond with standardized success response
+    res.json({
+      data: shipments,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+      },
+    });
   } catch (error) {
+    console.error('Error fetching shipments:', error.message);
+    // Respond with standardized error response
     res.status(500).json({ error: error.message });
   }
 };

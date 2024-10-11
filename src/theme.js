@@ -2,7 +2,7 @@ export const theme = {
   cssVar: true,
   token: {
     colorPrimary: '#201E50',
-    colorBgBase: '#eef0f2',
+    colorBgBase: '#fff',
     borderRadius: 3,
     fontSize: 18,
     layoutHeaderBg: '#201E50',

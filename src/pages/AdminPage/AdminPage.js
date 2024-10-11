@@ -14,17 +14,17 @@ const AdminPage = () => {
   const tabItems = [
     {
       key: 'shipments',
-      label: 'Shipments',
+      label: 'Посылки',
       children: <ShipmentsTable />,
     },
     {
       key: 'users',
-      label: 'Users',
+      label: 'Пользователи',
       children: <UsersTable />,
     },
     {
       key: 'logs',
-      label: 'Logs',
+      label: 'Логи',
       children: <LogsTable />,
     },
   ];
@@ -36,8 +36,7 @@ const AdminPage = () => {
 
   return (
     <div>
-      <h1>Admin Page</h1>
-      <p>Admins can manage users and shipments</p>
+      <h1>Панель управления</h1>
       <Tabs activeKey={activeTab} onChange={handleTabChange} items={tabItems} />
     </div>
   );

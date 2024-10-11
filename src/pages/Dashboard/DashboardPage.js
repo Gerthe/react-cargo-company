@@ -32,7 +32,12 @@ const DashboardPage = () => {
 
   return (
     <div>
-      <div>
+      <div
+        style={{
+          marginTop: 40,
+          marginBottom: 20,
+        }}
+      >
         <Button
           type="primary"
           onClick={() => {

@@ -18,14 +18,14 @@ const headerStyle = {
 };
 const contentStyle = {
   minHeight: 120,
-  padding: '0 50px',
-  marginTop: 40,
+  backgroundColor: '#fff',
+  height: 'calc(100vh - 120px)',
 };
 const footerStyle = {
   textAlign: 'center',
   color: '#fff',
   backgroundColor: 'var(--main)',
-  marginTop: 40,
+  height: 60,
 };
 const layoutStyle = {
   borderRadius: 8,
@@ -73,7 +73,15 @@ const DashboardLayout = () => {
               )}
             </Header>
             <Content style={contentStyle}>
-              <Outlet />
+              <div
+                style={{
+                  overflowY: 'auto',
+                  height: '100%',
+                  padding: '0 24px 24px 24px',
+                }}
+              >
+                <Outlet />
+              </div>
             </Content>
             <Footer style={footerStyle}>
               <Link
