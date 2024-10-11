@@ -27,7 +27,7 @@ const UsersTable = () => {
 
   return (
     <div>
-      <Table dataSource={users} loading={loading} rowKey="phone">
+      <Table dataSource={users} loading={loading} rowKey="phone" size={'small'}>
         <Column title="ID" dataIndex="id" key="id" />
         <Column
           title="Телефон"

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Space, Table, Tag, Empty } from 'antd';
+import { Input, Table, Tag, Empty, Tooltip, Button } from 'antd';
 import dayjs from 'dayjs';
 import shipmentsApi from '../../api/shipments.api';
 import { SHIPMENT_STATUSES_MAP } from '../../constants';
 import useDebounce from '../../hooks/useDebounce';
+import { EditOutlined } from '@ant-design/icons';
 
 const { Column } = Table;
 
@@ -74,6 +75,12 @@ const ShipmentsTable = () => {
     }
   };
 
+  const openEditModal = (record) => {
+    console.log('Edit shipment:', record);
+
+    //TODO: open modal with shipment data
+  };
+
   return (
     <div>
       <div
@@ -97,6 +104,7 @@ const ShipmentsTable = () => {
           locale={{
             emptyText: <Empty description="Тут пока пусто" />,
           }}
+          size={'small'}
         >
           <Column title="ID" dataIndex="id" key="id" width={50} />
           <Column
@@ -135,11 +143,14 @@ const ShipmentsTable = () => {
           <Column
             title="Action"
             key="action"
-            render={() => (
-              <Space size="middle">
-                <a>Edit</a>
-                <a>Delete</a>
-              </Space>
+            render={(value, record) => (
+              <Tooltip title="Изменить статус">
+                <Button
+                  shape="circle"
+                  icon={<EditOutlined />}
+                  onClick={() => openEditModal(record)}
+                />
+              </Tooltip>
             )}
           />
         </Table>
