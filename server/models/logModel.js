@@ -1,10 +1,10 @@
-import db from '../config/db.js';
+import db from '../db.js';
 
 const logModel = {
   log: async ({ shipmentId, adminId, prevStatus, newStatus }) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.execute(
+      const pool = db.getPool();
+      const [results] = await pool.query(
         'INSERT INTO admin_logs (shipmentId, adminId, previousStatus, newStatus) VALUES (?, ?, ?, ?)',
         [shipmentId, adminId, prevStatus, newStatus]
       );
@@ -15,8 +15,8 @@ const logModel = {
   },
   getLogsByShipmentId: async (shipmentId) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
+      const pool = db.getPool();
+      const [results] = await pool.query(
         'SELECT * FROM admin_logs WHERE shipmentId = ?',
         [shipmentId]
       );
@@ -26,7 +26,6 @@ const logModel = {
     }
   },
   getLogs: async (pagination, sorting, searchValue) => {
-    const connection = await db.getConnection();
     const {
       page = 1,
       limit = 10,
@@ -63,7 +62,6 @@ const logModel = {
       query += 'AND shipments.trackingCode LIKE ? ';
       values.push(`%${searchValue}%`);
     }
-    console.log(Object.keys(searchValue));
 
     query += ` ORDER BY admin_logs.${safeSortBy} ${safeOrder}`;
     query += ' LIMIT ? OFFSET ?';
@@ -72,16 +70,16 @@ const logModel = {
       (parseInt(page, 10) - 1) * parseInt(limit, 10)
     );
 
-    console.log('query', query);
-    console.log('values', values);
+    try {
+      const pool = db.getPool();
+      const [results] = await pool.query(query, values);
 
-    const [results] = await connection.query(query, values);
-
-    return results;
+      return results;
+    } catch (err) {
+      throw new Error('Error getting logs: ' + err.message);
+    }
   },
   getTotalCount: async (searchValue) => {
-    const connection = await db.getConnection();
-
     let query = `
     SELECT COUNT(*) AS total 
     FROM admin_logs
@@ -95,9 +93,13 @@ const logModel = {
       values.push(`%${searchValue}%`);
     }
 
-    // Execute the query
-    const [results] = await connection.query(query, values);
-    return results[0].total;
+    try {
+      const pool = db.getPool();
+      const [results] = await pool.query(query, values);
+      return results[0].total;
+    } catch (err) {
+      throw new Error('Error getting total count: ' + err.message);
+    }
   },
 };
 

@@ -5,6 +5,7 @@ import shipmentsApi from '../../api/shipments.api';
 import { SHIPMENT_STATUSES_MAP } from '../../constants';
 import useDebounce from '../../hooks/useDebounce';
 import { EditOutlined } from '@ant-design/icons';
+import ShipmentModal from './ShipmentModal';
 
 const { Column } = Table;
 
@@ -15,10 +16,15 @@ const ShipmentsTable = () => {
   const debouncedSearchValue = useDebounce(searchValue, 500);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 20,
   });
   const [sorter, setSorter] = useState({});
   const [filters, setFilters] = useState({});
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedShipment, setSelectedShipment] = useState();
+
+  const [isReloadRequired, toggleReloadRequired] = useState(false);
 
   const handleSearch = (e) => {
     const { value } = e.target;
@@ -61,6 +67,7 @@ const ShipmentsTable = () => {
     sorter,
     filters,
     debouncedSearchValue,
+    isReloadRequired,
   ]);
 
   const handleTableChange = (newPagination, newFilters, newSorter) => {
@@ -75,10 +82,17 @@ const ShipmentsTable = () => {
     }
   };
 
-  const openEditModal = (record) => {
-    console.log('Edit shipment:', record);
+  const showModal = (record) => {
+    setSelectedShipment(record);
+    setModalOpen(true);
+  };
 
-    //TODO: open modal with shipment data
+  const handleOk = () => {
+    toggleReloadRequired(!isReloadRequired);
+  };
+
+  const handleCancel = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -148,13 +162,22 @@ const ShipmentsTable = () => {
                 <Button
                   shape="circle"
                   icon={<EditOutlined />}
-                  onClick={() => openEditModal(record)}
+                  onClick={() => showModal(record)}
                 />
               </Tooltip>
             )}
           />
         </Table>
       </div>
+
+      {modalOpen && selectedShipment && (
+        <ShipmentModal
+          open={modalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          shipmentId={selectedShipment.id}
+        />
+      )}
     </div>
   );
 };

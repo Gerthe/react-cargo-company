@@ -79,7 +79,10 @@ export const getAllShipments = async (req, res) => {
 };
 
 export const updateShipmentStatus = async (req, res) => {
-  const { id, status } = req.body;
+  const { status } = req.body;
+  const { id } = req.params;
+  const userId = req.user.id;
+
   try {
     const shipment = await shipmentModel.getShipmentById(id);
     const previousStatus = shipment.status || 'empty';
@@ -88,7 +91,7 @@ export const updateShipmentStatus = async (req, res) => {
     if (results) {
       await logModel.log({
         shipmentId: id,
-        adminId: 1,
+        adminId: userId,
         prevStatus: previousStatus,
         newStatus: status,
       });

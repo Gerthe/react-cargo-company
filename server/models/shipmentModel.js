@@ -1,4 +1,4 @@
-import db from '../config/db.js';
+import db from '../db.js';
 
 const SHIPMENT_STATUSES = {
   CREATED: 'created',
@@ -12,8 +12,8 @@ const SHIPMENT_STATUSES = {
 const shipmentModel = {
   createShipment: async (userId, trackingCode, description) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
+      const pool = db.getPool();
+      const [results] = await pool.query(
         'INSERT INTO shipments (userId, trackingCode, description, status) VALUES (?, ?, ?, ?)',
         [userId, trackingCode, description, SHIPMENT_STATUSES.CREATED]
       );
@@ -29,18 +29,30 @@ const shipmentModel = {
   },
   getShipmentById: async (id) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
-        'SELECT * FROM shipments WHERE id = ?',
-        [id]
-      );
+      const pool = db.getPool();
+      const query = `
+        SELECT
+          shipments.id,
+          shipments.status,
+          shipments.trackingCode,
+          shipments.createdAt,
+          shipments.updatedAt,
+          shipments.description,
+          users.phone AS userPhone,
+          users.name AS userName,
+          users.id AS userId
+        FROM shipments
+        JOIN users ON shipments.userId = users.id
+        WHERE shipments.id = ?
+    `;
+
+      const [results] = await pool.query(query, [id]);
       return results[0];
     } catch (err) {
       throw new Error('Error getting shipment: ' + err.message);
     }
   },
   getShipments: async (filters, pagination, sorting, searchValue) => {
-    const connection = await db.getConnection();
     const {
       page = 1,
       limit = 10,
@@ -56,7 +68,6 @@ const shipmentModel = {
       'createdAt',
       'updatedAt',
       'description',
-      'clientName',
     ];
     const orderOptions = ['ASC', 'DESC'];
 
@@ -73,7 +84,9 @@ const shipmentModel = {
       shipments.createdAt, 
       shipments.updatedAt, 
       shipments.description, 
-      users.phone AS userPhone
+      users.phone AS userPhone,
+      users.name AS userName,
+      users.id AS userId
     FROM shipments
     JOIN users ON shipments.userId = users.id
     WHERE 1=1
@@ -111,14 +124,19 @@ const shipmentModel = {
       (parseInt(page, 10) - 1) * parseInt(limit, 10)
     );
 
-    // Execute the query
-    const [results] = await connection.query(query, values);
-    return results;
+    try {
+      const pool = db.getPool();
+      // Execute the query
+      const [results] = await pool.query(query, values);
+      return results;
+    } catch (err) {
+      throw new Error('Error getting shipments: ' + err.message);
+    }
   },
   updateShipmentStatus: async (id, status) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
+      const pool = db.getPool();
+      const [results] = await pool.query(
         'UPDATE shipments SET status = ? WHERE id = ?',
         [status, id]
       );
@@ -130,8 +148,8 @@ const shipmentModel = {
   },
   getUserActiveShipments: async (userId) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
+      const pool = db.getPool();
+      const [results] = await pool.query(
         'SELECT * FROM shipments WHERE status != ? AND userId = ? ORDER BY updatedAt DESC',
         [SHIPMENT_STATUSES.DELIVERED, userId]
       );
@@ -144,8 +162,8 @@ const shipmentModel = {
   },
   getUserInactiveShipments: async (userId) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
+      const pool = db.getPool();
+      const [results] = await pool.query(
         'SELECT * FROM shipments WHERE status = ? AND userId = ? ORDER BY updatedAt DESC',
         [SHIPMENT_STATUSES.DELIVERED, userId]
       );
@@ -157,11 +175,10 @@ const shipmentModel = {
   },
   deleteShipment: async (id) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
-        'DELETE FROM shipments WHERE id = ?',
-        [id]
-      );
+      const pool = db.getPool();
+      const [results] = await pool.query('DELETE FROM shipments WHERE id = ?', [
+        id,
+      ]);
 
       return results;
     } catch (err) {
@@ -169,7 +186,6 @@ const shipmentModel = {
     }
   },
   getTotalCount: async (filters, searchValue) => {
-    const connection = await db.getConnection();
     const { status, trackingCode, userPhone } = filters;
 
     let query = `
@@ -200,10 +216,14 @@ const shipmentModel = {
       query += ' AND (shipments.trackingCode LIKE ? OR users.phone LIKE ?)';
       values.push(`%${searchValue}%`, `%${searchValue}%`);
     }
-
-    // Execute the query
-    const [results] = await connection.query(query, values);
-    return results[0].total;
+    try {
+      const pool = db.getPool();
+      // Execute the query
+      const [results] = await pool.query(query, values);
+      return results[0].total;
+    } catch (err) {
+      throw new Error('Error getting total count: ' + err.message);
+    }
   },
 };
 

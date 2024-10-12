@@ -17,5 +17,6 @@ router.get('/', authMiddleware, getAllShipments);
 router.post('/update/:id', authMiddleware, updateShipmentStatus);
 router.get('/status/:status', authMiddleware, getShipmentsByStatus);
 router.delete('/:id', authMiddleware, deleteShipment);
+router.patch('/:id/status', authMiddleware, updateShipmentStatus);
 
 export default router;

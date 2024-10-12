@@ -48,6 +48,17 @@ const shipmentsApi = {
     });
     return response.data;
   },
+  updateShipmentStatus: async (id, status) => {
+    const response = await axios.patch(
+      `${apiName}/${id}/status`,
+      { status },
+      {
+        headers: getHeaders(),
+        baseURL: API_URL,
+      }
+    );
+    return response.data;
+  },
   getShipmentWithStatus: async (status) => {
     const response = await axios.get(`${apiName}/status/${status}`, {
       headers: getHeaders(),

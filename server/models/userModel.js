@@ -1,10 +1,10 @@
-import db from '../config/db.js';
+import db from '../db.js';
 
 const userModel = {
   createUser: async (phone, password, name) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
+      const pool = db.getPool();
+      const [results] = await pool.query(
         'INSERT INTO users (phone, password, name) VALUES (?, ?, ?)',
         [phone, password, name]
       );
@@ -15,9 +15,9 @@ const userModel = {
   },
   getUserById: async (id) => {
     try {
-      const connection = await db.getConnection();
+      const pool = db.getPool();
       const publicColumns = ['id', 'phone', 'role'];
-      const [results] = await connection.query(
+      const [results] = await pool.query(
         `SELECT ${publicColumns.join(', ')} FROM users WHERE id = ?`,
         [id]
       );
@@ -28,7 +28,8 @@ const userModel = {
   },
   getAllUsers: async () => {
     try {
-      const connection = await db.getConnection();
+      const pool = db.getPool();
+
       const query = `
         SELECT
         users.*,
@@ -38,8 +39,7 @@ const userModel = {
         WHERE role = "user"
         GROUP BY users.id
       `;
-
-      const [results] = await connection.query(query);
+      const [results] = await pool.query(query);
       return results;
     } catch (err) {
       throw new Error('Error getting users: ' + err.message);
@@ -47,8 +47,8 @@ const userModel = {
   },
   getUserByPhone: async (phone) => {
     try {
-      const connection = await db.getConnection();
-      const [results] = await connection.query(
+      const pool = db.getPool();
+      const [results] = await pool.query(
         'SELECT * FROM users WHERE phone = ?',
         [phone]
       );
