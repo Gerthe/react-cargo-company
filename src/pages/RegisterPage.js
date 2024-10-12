@@ -16,7 +16,11 @@ const RegisterPage = () => {
 
   const handleSubmit = async (values) => {
     try {
-      const register = await authApi.register(values.phone, values.password);
+      const register = await authApi.register(
+        values.phone,
+        values.password,
+        values.name
+      );
       if (register) {
         setIsRegistered(true);
       }
@@ -51,6 +55,7 @@ const RegisterPage = () => {
               label="Пароль"
               name="password"
               rules={[{ required: true }]}
+              minLength={6}
             >
               <Input.Password />
             </Form.Item>

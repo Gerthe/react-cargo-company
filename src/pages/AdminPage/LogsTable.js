@@ -100,12 +100,6 @@ const LogsTable = () => {
           size={'small'}
         >
           <Column
-            title="ID"
-            dataIndex="shipmentId"
-            key="shipmentId"
-            width={50}
-          />
-          <Column
             title="Код отслеживания"
             dataIndex="trackingCode"
             key="trackingCode"

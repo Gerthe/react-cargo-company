@@ -3,17 +3,20 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-let connection;
+let pool;
 
 const db = {
   getConnection: async () => {
-    if (!connection) {
+    if (!pool) {
       try {
-        connection = await mysql.createConnection({
+        pool = await mysql.createPool({
           host: process.env.DB_HOST,
           user: process.env.DB_USER,
           password: process.env.DB_PASSWORD,
           database: process.env.DB_NAME,
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0,
         });
 
         console.log('Successfully connected to the MySQL database.');
@@ -22,7 +25,15 @@ const db = {
         throw error;
       }
     }
-    return connection;
+
+    try {
+      const connection = await pool.getConnection();
+      console.log('Successfully got a connection from the pool.');
+      return connection;
+    } catch (error) {
+      console.error('Error getting a connection from the pool:', error);
+      throw error;
+    }
   },
 };
 

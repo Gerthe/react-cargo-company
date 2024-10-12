@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import dayjs from 'dayjs';
 import usersApi from '../../api/users.api';
 
@@ -28,12 +28,18 @@ const UsersTable = () => {
   return (
     <div>
       <Table dataSource={users} loading={loading} rowKey="phone" size={'small'}>
-        <Column title="ID" dataIndex="id" key="id" />
         <Column
           title="Телефон"
           dataIndex="phone"
           key="phone"
           render={(phone) => '+7' + phone}
+        />
+        <Column title="Имя" dataIndex="name" key="name" />
+        <Column
+          title="Заказы"
+          dataIndex="shipmentsCount"
+          key="shipmentsCount"
+          render={(count) => <Button type="link">{count}</Button>}
         />
         <Column
           title="Создан"

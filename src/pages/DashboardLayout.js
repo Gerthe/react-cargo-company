@@ -19,16 +19,15 @@ const headerStyle = {
 const contentStyle = {
   minHeight: 120,
   backgroundColor: '#fff',
-  height: 'calc(100vh - 120px)',
+  height: 'calc(100vh - 140px)',
 };
 const footerStyle = {
   textAlign: 'center',
   color: '#fff',
   backgroundColor: 'var(--main)',
-  height: 60,
+  height: 80,
 };
 const layoutStyle = {
-  borderRadius: 8,
   overflow: 'hidden',
 };
 

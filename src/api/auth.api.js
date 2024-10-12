@@ -13,10 +13,10 @@ const authApi = {
     );
     return response.data;
   },
-  register: async (phone, password) => {
+  register: async (phone, password, name) => {
     const response = await axios.post(
       `${apiName}/register`,
-      { phone, password },
+      { phone, password, name },
       { baseURL: API_URL }
     );
     return response.data;

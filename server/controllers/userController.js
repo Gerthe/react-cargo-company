@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export const registerUser = async (req, res) => {
-  const { phone, password } = req.body;
+  const { phone, password, name } = req.body;
   try {
     const existingUser = await userModel.getUserByPhone(phone);
 
@@ -12,7 +12,7 @@ export const registerUser = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await userModel.createUser(phone, hashedPassword);
+    const newUser = await userModel.createUser(phone, hashedPassword, name);
 
     res.status(201).json(newUser);
   } catch (error) {

@@ -32,8 +32,7 @@
     "start": "concurrently \"npm run start-react\" \"npm run start-backend\"",
     "start-react": "react-scripts start",
     "start-backend": "nodemon server/index.js",
-    "prepare": "husky",
-    "build-prod": "react-scripts build && mv build/* /home/ubuntu/react-cargo-build/"
+    "prepare": "husky"
   },
   "eslintConfig": {
     "extends": [

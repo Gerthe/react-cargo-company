@@ -1,14 +1,14 @@
 import db from '../config/db.js';
 
 const userModel = {
-  createUser: async (phone, password) => {
+  createUser: async (phone, password, name) => {
     try {
       const connection = await db.getConnection();
       const [results] = await connection.query(
-        'INSERT INTO users (phone, password) VALUES (?, ?)',
-        [phone, password]
+        'INSERT INTO users (phone, password, name) VALUES (?, ?, ?)',
+        [phone, password, name]
       );
-      return { id: results.insertId, phone };
+      return { id: results.insertId, phone, name };
     } catch (err) {
       throw new Error('Error inserting user: ' + err.message);
     }
@@ -29,9 +29,17 @@ const userModel = {
   getAllUsers: async () => {
     try {
       const connection = await db.getConnection();
-      const [results] = await connection.query(
-        'SELECT * FROM users WHERE role = "user"'
-      );
+      const query = `
+        SELECT
+        users.*,
+        COUNT(shipments.id) as shipmentsCount
+        FROM users
+        LEFT JOIN shipments ON users.id = shipments.userId
+        WHERE role = "user"
+        GROUP BY users.id
+      `;
+
+      const [results] = await connection.query(query);
       return results;
     } catch (err) {
       throw new Error('Error getting users: ' + err.message);

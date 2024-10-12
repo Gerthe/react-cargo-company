@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tabs } from 'antd';
 import UsersTable from './UsersTable';
 import ShipmentsTable from './ShipmentsTable';
@@ -10,6 +10,10 @@ const AdminPage = () => {
   const [activeTab, setActiveTab] = React.useState(
     searchParams.get('tab') || 'shipments'
   );
+
+  useEffect(() => {
+    setActiveTab(searchParams.get('tab') || 'shipments');
+  }, [searchParams]);
 
   const tabItems = [
     {
