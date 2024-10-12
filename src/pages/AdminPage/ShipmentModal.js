@@ -21,54 +21,54 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
     }));
   };
 
-  const getItems = (data) => {
-    return [
-      {
-        key: '1',
-        label: 'Код отслеживания',
-        children: data.trackingCode,
-      },
-      {
-        key: '2',
-        label: 'Статус',
-        children: (
-          <Select
-            defaultValue={data.status}
-            style={{ width: 250 }}
-            onChange={handleStatusChange}
-            options={getShipmentStatusOptions()}
-          />
-        ),
-      },
-      {
-        key: '3',
-        label: 'Имя',
-        children: data.userName,
-      },
-      {
-        key: '4',
-        label: 'Телефон',
-        children: '+7' + data.userPhone,
-      },
-      {
-        key: '5',
-        label: 'Дата создания',
-        children: dayjs(data.createdAt).format('DD.MM.YYYY HH:mm'),
-      },
-      {
-        key: '6',
-        label: 'Дата обновления',
-        children: dayjs(data.updatedAt).format('DD.MM.YYYY HH:mm'),
-      },
-      {
-        key: '7',
-        label: 'Описание',
-        children: data.description || 'Отсутствует',
-      },
-    ];
-  };
-
   useEffect(() => {
+    const getItems = (data) => {
+      return [
+        {
+          key: '1',
+          label: 'Код отслеживания',
+          children: data.trackingCode,
+        },
+        {
+          key: '2',
+          label: 'Статус',
+          children: (
+            <Select
+              defaultValue={data.status}
+              style={{ width: 250 }}
+              onChange={handleStatusChange}
+              options={getShipmentStatusOptions()}
+            />
+          ),
+        },
+        {
+          key: '3',
+          label: 'Имя',
+          children: data.userName,
+        },
+        {
+          key: '4',
+          label: 'Телефон',
+          children: '+7' + data.userPhone,
+        },
+        {
+          key: '5',
+          label: 'Дата создания',
+          children: dayjs(data.createdAt).format('DD.MM.YYYY HH:mm'),
+        },
+        {
+          key: '6',
+          label: 'Дата обновления',
+          children: dayjs(data.updatedAt).format('DD.MM.YYYY HH:mm'),
+        },
+        {
+          key: '7',
+          label: 'Описание',
+          children: data.description || 'Отсутствует',
+        },
+      ];
+    };
+
     const fetchShipment = async () => {
       try {
         setIsLoading(true);
@@ -88,7 +88,7 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
     if (shipmentId) {
       fetchShipment();
     }
-  }, [shipmentId, getItems]);
+  }, [shipmentId]);
 
   const handleOk = async () => {
     try {
@@ -138,7 +138,7 @@ ShipmentModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
-  shipmentId: PropTypes.string.isRequired,
+  shipmentId: PropTypes.number.isRequired,
 };
 
 export default ShipmentModal;

@@ -19,6 +19,8 @@ app.use(express.json());
 app.use(
   cors({
     origin: env.BASE_URL, // Укажите здесь URL вашего фронтенда
+    methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS', // Allow required HTTP methods
+    allowedHeaders: 'Content-Type,Authorization', // Include the required headers
     credentials: true,
   })
 );
