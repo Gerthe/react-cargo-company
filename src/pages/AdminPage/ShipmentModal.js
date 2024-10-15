@@ -127,7 +127,7 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
           layout="vertical"
           items={items}
           bordered={true}
-          column={2}
+          column={{ xs: 1, sm: 1, md: 2 }}
         />
       )}
     </Modal>

@@ -27,6 +27,13 @@ const AddShipmentPage = () => {
 
   return (
     <div>
+      <a
+        href={'/dashboard'}
+        style={{ color: 'var(--main)', marginTop: 20, display: 'inline-block' }}
+      >
+        {'< '}Назад
+      </a>
+
       <h1>Добавить новый код отслеживания</h1>
       <p
         style={{
