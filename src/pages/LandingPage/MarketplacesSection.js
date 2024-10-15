@@ -60,7 +60,9 @@ const MarketplacesSection = () => {
               }}
             >
               <Col {...flexTwoColumnsConfig}>
-                <Typography.Paragraph copyable>PC888</Typography.Paragraph>
+                <Typography.Paragraph copyable>
+                  PC-[4 последние цифры вашего номера телефона]
+                </Typography.Paragraph>
                 <Typography.Paragraph copyable>
                   13521750477
                 </Typography.Paragraph>

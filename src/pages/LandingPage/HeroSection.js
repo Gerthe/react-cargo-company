@@ -1,6 +1,5 @@
 import './HeroSection.css';
 import React from 'react';
-import Button from '../../components/Button';
 import { Col, Row, Image } from 'antd';
 import { flexTwoColumnsConfig } from '../../theme';
 
@@ -20,9 +19,17 @@ const HeroSection = () => {
               вашего груза, от погрузки до доставки на склад. С нами ваш бизнес
               становится проще!
             </p>
-            <Button type="primary" size="large">
+            <a
+              href="#contact"
+              style={{
+                display: 'inline-block',
+                padding: '10px 20px',
+                background: 'var(--main)',
+                color: 'var(--accent)',
+              }}
+            >
               Рассчитать стоимость
-            </Button>
+            </a>
           </Col>
           <Col {...flexTwoColumnsConfig}>
             <Image

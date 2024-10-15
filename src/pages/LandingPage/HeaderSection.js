@@ -4,12 +4,10 @@ import { Col, Flex, Menu, Row, Grid } from 'antd';
 import {
   LoginOutlined,
   MailTwoTone,
-  PhoneFilled,
   PhoneTwoTone,
   TikTokOutlined,
 } from '@ant-design/icons';
 import image from '../../assets/085.svg';
-import Button from '../../components/Button';
 import { Link } from 'react-router-dom';
 
 const { useBreakpoint } = Grid;
@@ -66,24 +64,16 @@ const HeaderSection = () => {
   ];
 
   const loginLink = (
-    <Link to={'/login'}>
-      Войти <LoginOutlined />
-    </Link>
-  );
-
-  const callButton = (
-    <Button
-      size="large"
-      type="primary"
-      href="#contact"
-      icon={<PhoneFilled />}
+    <Link
+      to={'/login'}
       style={{
-        fontSize: 20,
-        marginTop: 8,
+        color: 'var(--main)',
+        padding: showFull ? 0 : 10,
+        marginBottom: 20,
       }}
     >
-      Вам перезвонить?
-    </Button>
+      <LoginOutlined /> Войти в кабинет
+    </Link>
   );
 
   return (
@@ -113,7 +103,7 @@ const HeaderSection = () => {
               }}
               align={'flex-start'}
             >
-              {loginLink}
+              {showFull && loginLink}
               {socialLinks.map((item) => (
                 <a
                   key={item.key}
@@ -125,8 +115,6 @@ const HeaderSection = () => {
                   {showFull && ' ' + item.title}
                 </a>
               ))}
-
-              {showFull && callButton}
             </Flex>
           </Col>
         </Row>
@@ -145,6 +133,27 @@ const HeaderSection = () => {
             margin: '12px 0',
           }}
         />
+
+        {!showFull && (
+          <div
+            style={{
+              width: '100%',
+              backgroundColor: 'var(--main)',
+              padding: 10,
+            }}
+          >
+            <Link
+              to={'/login'}
+              style={{
+                color: 'var(--accent)',
+                padding: showFull ? 0 : 10,
+                marginBottom: 20,
+              }}
+            >
+              <LoginOutlined /> Войти в кабинет
+            </Link>
+          </div>
+        )}
       </div>
     </header>
   );
