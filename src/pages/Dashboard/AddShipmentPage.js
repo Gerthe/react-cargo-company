@@ -3,6 +3,7 @@ import { Alert, Form, Input } from 'antd';
 import shipmentsApi from '../../api/shipments.api';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
+import { ERROR_MESSAGES } from '../../constants/errors';
 
 const AddShipmentPage = () => {
   const [form] = Form.useForm();
@@ -18,8 +19,9 @@ const AddShipmentPage = () => {
         navigate('/dashboard');
       }
     } catch (err) {
-      setFormError(err.response.data.message);
-      console.error(err);
+      const localisedError =
+        ERROR_MESSAGES[err.response.data.message] || err.response.data.message;
+      setFormError(localisedError);
     } finally {
       setIsFormLoading(false);
     }
@@ -55,10 +57,15 @@ const AddShipmentPage = () => {
         <Form.Item
           label="Код отслеживания"
           name="trackingCode"
+          minLength={7}
           rules={[
             {
               required: true,
               message: 'Пожалуйста, введите код отслеживания!',
+            },
+            {
+              min: 7,
+              message: 'Код отслеживания должен содержать минимум 7 символов',
             },
           ]}
         >

@@ -87,7 +87,7 @@ const ShipmentsList = () => {
             marginBottom: 20,
           }}
         >
-          <ShipmentStatusTimeline shipmentStatus={shipment.status} />
+          <ShipmentStatusTimeline shipment={shipment} />
         </Card>
       ))}
 

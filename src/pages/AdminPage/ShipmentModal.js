@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Select, Descriptions, Skeleton } from 'antd';
-import { SHIPMENT_STATUSES_MAP } from '../../constants';
+import {
+  DEFAULT_LOCATION,
+  SHIPMENT_STATUSES_MAP,
+  SHIPMENT_STATUSES_ORDERED,
+  SHIPMENT_STATUSES_ORDERED_DEFAULT,
+} from '../../constants';
 import dayjs from 'dayjs';
 import shipmentsApi from '../../api/shipments.api';
 import PropTypes from 'prop-types';
@@ -14,11 +19,18 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
     setStatus(value);
   };
 
-  const getShipmentStatusOptions = () => {
-    return Object.keys(SHIPMENT_STATUSES_MAP).map((status) => ({
-      value: status,
-      label: SHIPMENT_STATUSES_MAP[status].title,
-    }));
+  const getShipmentStatusOptions = (shipment) => {
+    if (shipment.deliverTo === DEFAULT_LOCATION) {
+      return SHIPMENT_STATUSES_ORDERED_DEFAULT.map((status) => ({
+        value: status,
+        label: SHIPMENT_STATUSES_MAP[status].title,
+      }));
+    } else {
+      return SHIPMENT_STATUSES_ORDERED.map((status) => ({
+        value: status,
+        label: SHIPMENT_STATUSES_MAP[status].title,
+      }));
+    }
   };
 
   useEffect(() => {
@@ -37,32 +49,37 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
               defaultValue={data.status}
               style={{ width: 250 }}
               onChange={handleStatusChange}
-              options={getShipmentStatusOptions()}
+              options={getShipmentStatusOptions(data)}
             />
           ),
         },
         {
           key: '3',
+          label: 'Город',
+          children: data.deliverTo,
+        },
+        {
+          key: '4',
           label: 'Имя',
           children: data.userName,
         },
         {
-          key: '4',
+          key: '5',
           label: 'Телефон',
           children: '+7' + data.userPhone,
         },
         {
-          key: '5',
+          key: '6',
           label: 'Дата создания',
           children: dayjs(data.createdAt).format('DD.MM.YYYY HH:mm'),
         },
         {
-          key: '6',
+          key: '7',
           label: 'Дата обновления',
           children: dayjs(data.updatedAt).format('DD.MM.YYYY HH:mm'),
         },
         {
-          key: '7',
+          key: '8',
           label: 'Описание',
           children: data.description || 'Отсутствует',
         },

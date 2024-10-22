@@ -6,6 +6,18 @@ export const createShipment = async (req, res) => {
   const { trackingCode, description } = req.body;
   try {
     const userId = req.user.id;
+
+    if (!trackingCode || !description) {
+      return res.status(400).json({ message: 'MISSING_FIELDS' });
+    }
+
+    const isShipmentExists =
+      await shipmentModel.getShipmentByTrackingCode(trackingCode);
+
+    if (isShipmentExists) {
+      return res.status(409).json({ message: 'SHIPMENT_EXISTS' });
+    }
+
     const newShipment = await shipmentModel.createShipment(
       userId,
       trackingCode,

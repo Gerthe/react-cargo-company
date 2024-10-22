@@ -38,6 +38,7 @@ const shipmentModel = {
           shipments.createdAt,
           shipments.updatedAt,
           shipments.description,
+          shipments.deliverTo,
           users.phone AS userPhone,
           users.name AS userName,
           users.id AS userId
@@ -84,6 +85,7 @@ const shipmentModel = {
       shipments.createdAt, 
       shipments.updatedAt, 
       shipments.description, 
+      shipments.deliverTo,
       users.phone AS userPhone,
       users.name AS userName,
       users.id AS userId
@@ -223,6 +225,20 @@ const shipmentModel = {
       return results[0].total;
     } catch (err) {
       throw new Error('Error getting total count: ' + err.message);
+    }
+  },
+  getShipmentByTrackingCode: async (trackingCode) => {
+    try {
+      const pool = db.getPool();
+      const query = `
+        SELECT * FROM shipments WHERE trackingCode = ?
+    `;
+
+      const [results] = await pool.query(query, [trackingCode]);
+
+      return results[0];
+    } catch (err) {
+      throw new Error('Error getting shipment: ' + err.message);
     }
   },
 };

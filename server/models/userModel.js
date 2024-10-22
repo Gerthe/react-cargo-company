@@ -36,7 +36,6 @@ const userModel = {
         COUNT(shipments.id) as shipmentsCount
         FROM users
         LEFT JOIN shipments ON users.id = shipments.userId
-        WHERE role = "user"
         GROUP BY users.id
       `;
       const [results] = await pool.query(query);
