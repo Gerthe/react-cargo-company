@@ -1,6 +1,7 @@
 import userModel from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { fetchWithPagination } from '../services/genericService.js';
 
 export const registerUser = async (req, res) => {
   const { phone, password, name } = req.body;
@@ -36,14 +37,39 @@ export const getUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await userModel.getAllUsers();
-    if (users) {
-      res.json(users);
-    } else {
-      res.status(404).json({ message: 'Users not found' });
-    }
+    // Extract query parameters (filters, pagination, sorting, search)
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const sortBy = req.query.sortBy || 'createdAt';
+    const order = req.query.order || 'DESC';
+    const filters = req.query.filter || {};
+    const searchValue = req.query.search || '';
+
+    // Prepare pagination and sorting
+    const pagination = { page, limit };
+    const sorting = { sortBy, order };
+
+    // Use the generic service to fetch data
+    const { data, total, totalPages } = await fetchWithPagination(
+      userModel,
+      filters,
+      pagination,
+      sorting,
+      searchValue
+    );
+
+    // Respond with the fetched users
+    res.json({
+      data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 

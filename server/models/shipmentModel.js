@@ -128,8 +128,8 @@ const shipmentModel = {
 
     try {
       const pool = db.getPool();
-      // Execute the query
       const [results] = await pool.query(query, values);
+
       return results;
     } catch (err) {
       throw new Error('Error getting shipments: ' + err.message);

@@ -1,20 +1,42 @@
-import React from 'react';
-import { Table, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Table, Button, Input } from 'antd';
 import dayjs from 'dayjs';
 import usersApi from '../../api/users.api';
+import useDebounce from '../../hooks/useDebounce';
 
 const { Column } = Table;
 
 const UsersTable = () => {
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const debouncedSearchValue = useDebounce(searchValue, 500);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+  });
 
-  React.useEffect(() => {
+  const handleSearch = (e) => {
+    const { value } = e.target;
+    setSearchValue(value);
+  };
+
+  useEffect(() => {
+    console.log('fetching users');
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const data = await usersApi.getUsers();
-        setUsers(data);
+        const response = await usersApi.getUsers(
+          pagination,
+          null,
+          null,
+          debouncedSearchValue
+        );
+        setUsers(response.data);
+        setPagination({
+          ...pagination,
+          total: response.pagination.total,
+        });
       } catch (err) {
         console.error(err);
       } finally {
@@ -22,12 +44,39 @@ const UsersTable = () => {
       }
     };
 
+    // Fetch shipments when pagination, sorter, or filters change
     fetchUsers();
-  }, []);
+  }, [pagination.pageSize, debouncedSearchValue, pagination.current]);
+
+  const handleTableChange = (newPagination) => {
+    setPagination(newPagination);
+
+    console.log(newPagination);
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== newPagination.pageSize) {
+      setUsers([]);
+    }
+  };
 
   return (
     <div>
-      <Table dataSource={users} loading={loading} rowKey="phone" size={'small'}>
+      <div
+        style={{
+          marginBottom: 20,
+        }}
+      >
+        <Input.Search placeholder="Введите телефон" onChange={handleSearch} />
+      </div>
+
+      <Table
+        dataSource={users}
+        loading={loading}
+        pagination={pagination}
+        onChange={handleTableChange}
+        rowKey="phone"
+        size={'small'}
+      >
         <Column
           title="Телефон"
           dataIndex="phone"

@@ -26,11 +26,25 @@ const userModel = {
       throw new Error('Error getting user: ' + err.message);
     }
   },
-  getAllUsers: async () => {
-    try {
-      const pool = db.getPool();
+  getAll: async (filters, pagination, sorting, searchValue) => {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'createdAt',
+      order = 'DESC',
+    } = pagination;
 
-      const query = `
+    // Validate sortBy and order to prevent SQL injection
+    const sortableFields = ['id', 'updatedAt'];
+    const orderOptions = ['ASC', 'DESC'];
+
+    const safeSortBy = sortableFields.includes(sortBy) ? sortBy : 'createdAt';
+    const safeOrder = orderOptions.includes(order.toUpperCase())
+      ? order.toUpperCase()
+      : 'DESC';
+
+    let query;
+    query = `
         SELECT
         users.*,
         COUNT(shipments.id) as shipmentsCount
@@ -38,7 +52,28 @@ const userModel = {
         LEFT JOIN shipments ON users.id = shipments.userId
         GROUP BY users.id
       `;
-      const [results] = await pool.query(query);
+
+    const values = [];
+
+    if (searchValue) {
+      query += ' AND (users.phone LIKE ?)';
+      values.push(`%${searchValue}%`);
+    }
+
+    // Apply sorting
+    query += ` ORDER BY users.${safeSortBy} ${safeOrder}`;
+
+    // Apply pagination
+    query += ' LIMIT ? OFFSET ?';
+    values.push(
+      parseInt(limit, 10),
+      (parseInt(page, 10) - 1) * parseInt(limit, 10)
+    );
+
+    try {
+      const pool = db.getPool();
+      const [results] = await pool.query(query, values);
+
       return results;
     } catch (err) {
       throw new Error('Error getting users: ' + err.message);
@@ -54,6 +89,23 @@ const userModel = {
       return results[0];
     } catch (err) {
       throw new Error('Error getting user: ' + err.message);
+    }
+  },
+  getTotalCount: async (filters, searchValue) => {
+    let query = 'SELECT COUNT(*) as count FROM users';
+    const values = [];
+
+    if (searchValue) {
+      query += ' WHERE (phone LIKE ?)';
+      values.push(`%${searchValue}%`);
+    }
+
+    try {
+      const pool = db.getPool();
+      const [results] = await pool.query(query, values);
+      return results[0].count;
+    } catch (err) {
+      throw new Error('Error getting total count: ' + err.message);
     }
   },
 };
