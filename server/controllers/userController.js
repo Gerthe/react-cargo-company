@@ -35,6 +35,21 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const getUserInfo = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const user = await userModel.getUserById(userId);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'ee found ' + userId });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getAllUsers = async (req, res) => {
   try {
     // Extract query parameters (filters, pagination, sorting, search)

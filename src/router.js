@@ -9,6 +9,7 @@ import AdminPage from './pages/AdminPage/AdminPage';
 import RegisterPage from './pages/RegisterPage';
 import PrivateRoute from './components/PrivateRoute';
 import AddShipmentPage from './pages/Dashboard/AddShipmentPage';
+import AddressInfoPage from './pages/Dashboard/AddressInfoPage';
 
 //TODO: private routes for dashboard and admin
 
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddShipmentPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'address-info',
+        element: (
+          <PrivateRoute>
+            <AddressInfoPage />
           </PrivateRoute>
         ),
       },

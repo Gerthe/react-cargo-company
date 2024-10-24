@@ -78,8 +78,26 @@ const ShipmentsList = () => {
           }
           title={
             <div>
-              <h2>{shipment.trackingCode}</h2>
-              <p>{shipment.description}</p>
+              <div
+                style={{
+                  textTransform: 'uppercase',
+                  fontSize: 20,
+                  marginTop: 20,
+                  color: 'var(--main)',
+                  fontWeight: 'bold',
+                }}
+              >
+                {shipment.trackingCode}
+              </div>
+              <div
+                style={{
+                  fontSize: 16,
+                  color: '#a1a1b2',
+                  padding: '10px 0 15px',
+                }}
+              >
+                {shipment.description}
+              </div>
             </div>
           }
           style={{

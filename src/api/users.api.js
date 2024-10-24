@@ -32,6 +32,13 @@ const usersApi = {
     });
     return response.data;
   },
+  getMyInfo: async () => {
+    const response = await axios.get(`${apiName}/me`, {
+      baseURL: API_URL,
+      headers: getHeaders(),
+    });
+    return response.data;
+  },
 };
 
 export default usersApi;

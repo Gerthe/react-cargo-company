@@ -16,7 +16,7 @@ const userModel = {
   getUserById: async (id) => {
     try {
       const pool = db.getPool();
-      const publicColumns = ['id', 'phone', 'role'];
+      const publicColumns = ['id', 'phone', 'role', 'name', 'location'];
       const [results] = await pool.query(
         `SELECT ${publicColumns.join(', ')} FROM users WHERE id = ?`,
         [id]

@@ -4,6 +4,7 @@ import shipmentsApi from '../../api/shipments.api';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import { ERROR_MESSAGES } from '../../constants/errors';
+import { LeftOutlined } from '@ant-design/icons';
 
 const AddShipmentPage = () => {
   const [form] = Form.useForm();
@@ -30,10 +31,15 @@ const AddShipmentPage = () => {
   return (
     <div>
       <a
+        style={{
+          marginTop: 40,
+          marginBottom: 20,
+          color: 'var(--main)',
+          display: 'inline-block',
+        }}
         href={'/dashboard'}
-        style={{ color: 'var(--main)', marginTop: 20, display: 'inline-block' }}
       >
-        {'< '}Назад
+        <LeftOutlined /> Назад
       </a>
 
       <h1>Добавить новый код отслеживания</h1>

@@ -8,7 +8,7 @@ import {
 } from '../constants';
 
 const ShipmentStatusTimeline = ({ shipment }) => {
-  const { shipmentStatus, deliverTo } = shipment;
+  const { status: shipmentStatus, deliverTo } = shipment;
 
   const shipmentStatusMessages = {
     [SHIPMENT_STATUSES.CREATED]: 'Создано',
@@ -33,6 +33,7 @@ const ShipmentStatusTimeline = ({ shipment }) => {
       }
       return 'green';
     }
+
     return 'gray';
   };
 

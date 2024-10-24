@@ -18,9 +18,8 @@ const headerStyle = {
   padding: '0 24px',
 };
 const contentStyle = {
-  minHeight: 120,
   backgroundColor: '#fff',
-  height: 'calc(100vh - 110px)',
+  minHeight: 'calc(100vh - 110px)',
 };
 const footerStyle = {
   textAlign: 'center',
