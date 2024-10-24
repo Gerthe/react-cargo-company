@@ -1,6 +1,4 @@
-import { getHeaders } from './index.api';
-import axios from 'axios';
-import { API_URL } from '../config';
+import axiosInstance from './index.api';
 
 const apiName = 'shipments';
 
@@ -20,57 +18,39 @@ const shipmentsApi = {
       search,
     };
 
-    const response = await axios.get(apiName, {
-      params,
-      headers: getHeaders(),
-      baseURL: API_URL,
-    });
+    const response = await axiosInstance.get(apiName, { params });
     return response.data;
   },
+
   getShipmentById: async (id) => {
-    const response = await axios.get(`${apiName}/${id}`, {
-      headers: getHeaders(),
-      baseURL: API_URL,
-    });
+    const response = await axiosInstance.get(`${apiName}/${id}`);
     return response.data;
   },
+
   createShipment: async (shipment) => {
-    const response = await axios.post(apiName, shipment, {
-      headers: getHeaders(),
-      baseURL: API_URL,
-    });
+    const response = await axiosInstance.post(apiName, shipment);
     return response.data;
   },
+
   updateShipment: async (id, shipment) => {
-    const response = await axios.put(`${apiName}/${id}`, shipment, {
-      headers: getHeaders(),
-      baseURL: API_URL,
-    });
+    const response = await axiosInstance.put(`${apiName}/${id}`, shipment);
     return response.data;
   },
+
   updateShipmentStatus: async (id, status) => {
-    const response = await axios.patch(
-      `${apiName}/${id}/status`,
-      { status },
-      {
-        headers: getHeaders(),
-        baseURL: API_URL,
-      }
-    );
+    const response = await axiosInstance.patch(`${apiName}/${id}/status`, {
+      status,
+    });
     return response.data;
   },
+
   getShipmentWithStatus: async (status) => {
-    const response = await axios.get(`${apiName}/status/${status}`, {
-      headers: getHeaders(),
-      baseURL: API_URL,
-    });
+    const response = await axiosInstance.get(`${apiName}/status/${status}`);
     return response.data;
   },
+
   deleteShipment: async (id) => {
-    const response = await axios.delete(`${apiName}/${id}`, {
-      headers: getHeaders(),
-      baseURL: API_URL,
-    });
+    const response = await axiosInstance.delete(`${apiName}/${id}`);
     return response.data;
   },
 };

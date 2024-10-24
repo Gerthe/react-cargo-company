@@ -1,6 +1,4 @@
-import { API_URL } from '../config';
-import axios from 'axios';
-import { getHeaders } from './index.api';
+import axiosInstance from './index.api';
 
 const apiName = 'logs';
 
@@ -20,11 +18,8 @@ const logsApi = {
       search,
     };
 
-    const response = await axios.get(apiName, {
-      params,
-      headers: getHeaders(),
-      baseURL: API_URL,
-    });
+    const response = await axiosInstance.get(apiName, { params });
+
     return response.data;
   },
 };

@@ -36,6 +36,9 @@ const DashboardLayout = () => {
   const navigator = useNavigate();
   const isLogged = authApi.isLogged();
 
+  const userFromStorage = JSON.parse(localStorage.getItem('user'));
+  console.log(userFromStorage);
+
   const logout = () => {
     authApi.logout();
     navigator('/login');
@@ -58,6 +61,17 @@ const DashboardLayout = () => {
 
           {isLogged && (
             <div>
+              {userFromStorage && (
+                <div
+                  style={{
+                    color: 'var(--accent)',
+                    marginRight: '20px',
+                    display: 'inline-block',
+                  }}
+                >
+                  {userFromStorage?.name}
+                </div>
+              )}
               <Button
                 ghost
                 onClick={logout}

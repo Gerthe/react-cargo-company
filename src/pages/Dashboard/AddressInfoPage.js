@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Image, Row, Typography, Grid } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
-import { flexTwoColumnsConfig } from '../../theme';
 import screenShot from '../../assets/screenshot.jpg';
 import usersApi from '../../api/users.api';
 
@@ -41,37 +40,31 @@ const AddressInfoPage = () => {
 
       <Row gutter={20}>
         <Col>
-          При заполнении адреса доставки укажите следующие данные как в примере:
-          <Row
-            gutter={20}
-            style={{
-              marginTop: 20,
-            }}
-          >
-            <Col {...flexTwoColumnsConfig}>
-              <Typography.Paragraph copyable strong>
-                PC-{user?.phone?.slice(-4)}
-              </Typography.Paragraph>
-              <Typography.Paragraph copyable strong>
-                13521750477
-              </Typography.Paragraph>
-              <Typography.Paragraph copyable strong>
-                北京市 朝阳区
-              </Typography.Paragraph>
-              <Typography.Paragraph copyable strong>
-                朝外大街26号 朝外门地下三层816库房 PekinCargo888 +7{user?.phone}{' '}
-                {user?.name} {user?.location}
-              </Typography.Paragraph>
-            </Col>
+          <Typography.Paragraph>
+            {' '}
+            При заполнении адреса доставки укажите следующие данные как в
+            примере:
+          </Typography.Paragraph>
 
-            <Col {...flexTwoColumnsConfig} justify="center">
-              <Image
-                src={screenShot}
-                preview={isMobile}
-                style={{ margin: '0 auto', display: 'block', width: '50%' }}
-              />
-            </Col>
-          </Row>
+          <Typography.Paragraph copyable strong>
+            PC-{user?.phone?.slice(-4)}
+          </Typography.Paragraph>
+          <Typography.Paragraph copyable strong>
+            13521750477
+          </Typography.Paragraph>
+          <Typography.Paragraph copyable strong>
+            北京市 朝阳区
+          </Typography.Paragraph>
+          <Typography.Paragraph copyable strong>
+            朝外大街26号 朝外门地下三层816库房 PekinCargo888 +7{user?.phone}{' '}
+            {user?.name} {user?.location}
+          </Typography.Paragraph>
+
+          <Image
+            src={screenShot}
+            preview={isMobile}
+            style={{ margin: '0 auto', display: 'block', width: 300 }}
+          />
         </Col>
       </Row>
     </div>

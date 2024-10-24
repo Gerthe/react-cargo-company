@@ -14,6 +14,7 @@
     "concurrently": "8.2.2",
     "dayjs": "^1.11.13",
     "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "mysql2": "^3.11.3",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",

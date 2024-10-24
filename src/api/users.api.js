@@ -1,6 +1,4 @@
-import axios from 'axios';
-import { getHeaders } from './index.api';
-import { API_URL } from '../config';
+import axiosInstance from './index.api';
 
 const apiName = 'users';
 
@@ -17,26 +15,18 @@ const usersApi = {
       search,
     };
 
-    const response = await axios.get(apiName, {
+    const response = await axiosInstance.get(apiName, {
       params,
-      headers: getHeaders(),
-      baseURL: API_URL,
     });
 
     return response.data;
   },
   getUserById: async (id) => {
-    const response = await axios.get(`${apiName}/${id}`, {
-      baseURL: API_URL,
-      headers: getHeaders(),
-    });
+    const response = await axiosInstance.get(`${apiName}/${id}`);
     return response.data;
   },
   getMyInfo: async () => {
-    const response = await axios.get(`${apiName}/me`, {
-      baseURL: API_URL,
-      headers: getHeaders(),
-    });
+    const response = await axiosInstance.get(`${apiName}/me`);
     return response.data;
   },
 };

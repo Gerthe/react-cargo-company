@@ -1,15 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Alert } from 'antd';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 import authApi from '../api/auth.api';
 import { ERROR_MESSAGES } from '../constants/errors';
+import { jwtDecode } from 'jwt-decode';
 
 const LoginPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [formError, setFormError] = useState();
   const [isFormLoading, setIsFormLoading] = useState(false);
+
+  useEffect(() => {
+    // Check if token exists
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      try {
+        // Decode token to check expiration
+        const decodedToken = jwtDecode(token);
+        const currentTime = Date.now() / 1000; // current time in seconds
+
+        // Check if token is not expired
+        if (decodedToken.exp > currentTime) {
+          // If valid, redirect to the app
+          navigate('/dashboard'); // or your app's main route
+        }
+      } catch (error) {
+        console.error('Invalid token or decoding error');
+      }
+    }
+  }, [navigate]);
 
   const handleSubmit = async (values) => {
     setIsFormLoading(true);
@@ -24,6 +46,7 @@ const LoginPage = () => {
         if (user.role === 'admin') {
           navigate('/admin');
         } else {
+          console.log(user);
           localStorage.setItem('user', JSON.stringify(user));
           navigate('/dashboard');
         }

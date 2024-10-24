@@ -1,31 +1,28 @@
-import axios from 'axios';
-import { getHeaders } from './index.api';
-import { API_URL } from '../config';
+import axiosInstance from './index.api';
 
 const apiName = 'users';
 
 const authApi = {
   login: async (phone, password) => {
-    const response = await axios.post(
-      `${apiName}/login`,
-      { phone, password },
-      { baseURL: API_URL }
-    );
+    const response = await axiosInstance.post(`${apiName}/login`, {
+      phone,
+      password,
+    });
+
     return response.data;
   },
   register: async (phone, password, name) => {
-    const response = await axios.post(
-      `${apiName}/register`,
-      { phone, password, name },
-      { baseURL: API_URL }
-    );
+    const response = await axiosInstance.post(`${apiName}/register`, {
+      phone,
+      password,
+      name,
+    });
+
     return response.data;
   },
   getUserById: async (id) => {
-    const response = await axios.get(`${apiName}/${id}`, {
-      headers: getHeaders(),
-      baseURL: API_URL,
-    });
+    const response = await axiosInstance.get(`${apiName}/${id}`);
+
     return response.data;
   },
   logout: () => {
