@@ -25,7 +25,7 @@ const AddressInfoPage = () => {
   }, []);
 
   return (
-    <div style={{ margin: '0 auto' }}>
+    <div>
       <a
         style={{
           marginTop: 40,

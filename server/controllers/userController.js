@@ -90,6 +90,7 @@ export const getAllUsers = async (req, res) => {
 
 export const login = async (req, res) => {
   const { phone, password } = req.body;
+
   try {
     const user = await userModel.getUserByPhone(phone);
 
@@ -111,6 +112,7 @@ export const login = async (req, res) => {
       id: user.id,
       phone: user.phone,
       role: user.role,
+      name: user.name,
     };
 
     res.json({ token, user: userPublic });

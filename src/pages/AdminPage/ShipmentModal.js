@@ -37,12 +37,12 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
     const getItems = (data) => {
       return [
         {
-          key: '1',
+          key: 'trackingCode',
           label: 'Код отслеживания',
-          children: data.trackingCode,
+          children: <strong>{data.trackingCode}</strong>,
         },
         {
-          key: '2',
+          key: 'status',
           label: 'Статус',
           children: (
             <Select
@@ -54,34 +54,55 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
           ),
         },
         {
-          key: '3',
+          key: 'deliverTo',
           label: 'Город',
           children: data.deliverTo,
         },
         {
-          key: '4',
+          key: 'userName',
           label: 'Имя',
-          children: data.userName,
+          children: data.userName ? (
+            data.userName
+          ) : (
+            <span style={{ color: '#900' }}>Не указано</span>
+          ),
         },
         {
-          key: '5',
+          key: 'userPhone',
           label: 'Телефон',
-          children: '+7' + data.userPhone,
+          children: data.userPhone ? (
+            '+7' + data.userPhone
+          ) : (
+            <span style={{ color: '#900' }}>Не указан</span>
+          ),
         },
         {
-          key: '6',
+          key: 'description',
+          label: 'Описание от клиента',
+          children: data.description || 'Отсутствует',
+        },
+        {
+          key: 'createdAt',
           label: 'Дата создания',
           children: dayjs(data.createdAt).format('DD.MM.YYYY HH:mm'),
         },
         {
-          key: '7',
+          key: 'updatedAt',
           label: 'Дата обновления',
           children: dayjs(data.updatedAt).format('DD.MM.YYYY HH:mm'),
         },
         {
-          key: '8',
-          label: 'Описание',
-          children: data.description || 'Отсутствует',
+          key: 'arrivalDate',
+          label: 'Дата прибытия на склад в Китае',
+          children: data.arrivalDate
+            ? dayjs(data.arrivalDate).format('DD.MM.YYYY HH:mm')
+            : 'Не указана',
+        },
+        {
+          key: 'adminNote',
+          label: 'Комментарий',
+          children: data.adminNote || 'Отсутствует',
+          span: 2,
         },
       ];
     };
@@ -144,7 +165,7 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
           layout="vertical"
           items={items}
           bordered={true}
-          column={{ xs: 1, sm: 1, md: 2 }}
+          column={{ xs: 1, sm: 1, md: 3 }}
         />
       )}
     </Modal>

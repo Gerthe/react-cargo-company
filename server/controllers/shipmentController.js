@@ -3,28 +3,51 @@ import logModel from '../models/logModel.js';
 import userModel from '../models/userModel.js';
 
 export const createShipment = async (req, res) => {
-  const { trackingCode, description } = req.body;
   try {
-    const userId = req.user.id;
+    const { trackingCode, description, arrivalDate, adminNote, deliverTo } =
+      req.body;
+    const user = await userModel.getUserById(req.user.id);
 
-    if (!trackingCode || !description) {
+    if (user.role !== 'admin' && (!trackingCode || !description)) {
       return res.status(400).json({ message: 'MISSING_FIELDS' });
     }
 
-    const isShipmentExists =
+    const existentShipment =
       await shipmentModel.getShipmentByTrackingCode(trackingCode);
 
-    if (isShipmentExists) {
+    if (existentShipment && existentShipment.userId) {
       return res.status(409).json({ message: 'SHIPMENT_EXISTS' });
     }
 
-    const newShipment = await shipmentModel.createShipment(
-      userId,
-      trackingCode,
-      description
-    );
-    res.status(201).json(newShipment);
+    if (existentShipment && existentShipment.userId === null) {
+      const updatedShipment = await shipmentModel.claim(
+        existentShipment.id,
+        user.id
+      );
+      return res.status(201).json(updatedShipment);
+      //We want to claim the shipment by current user
+    } else {
+      const shipmentData = {
+        trackingCode,
+        description: user.role === 'admin' ? '' : description,
+        arrivalDate: user.role === 'admin' ? arrivalDate : null,
+        adminNote: user.role === 'admin' ? adminNote : null,
+        claimed: 0,
+        deliverTo,
+        userId: user.role === 'admin' ? null : user.id,
+        status:
+          user.role === 'admin'
+            ? shipmentModel.statuses.CHINA_WAREHOUSE
+            : shipmentModel.statuses.CREATED,
+        createdBy: user.id,
+      };
+
+      const newShipment = await shipmentModel.createShipment(shipmentData);
+
+      res.status(201).json(newShipment);
+    }
   } catch (error) {
+    console.error('Error creating shipment:', error.message);
     res.status(500).json({ error: error.message });
   }
 };
@@ -45,23 +68,18 @@ export const getShipment = async (req, res) => {
 
 export const getAllShipments = async (req, res) => {
   try {
-    // Extract query parameters
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
     const sortBy = req.query.sortBy || 'createdAt';
     const order = req.query.order || 'DESC';
 
-    // Extract filters (assuming filter parameters are sent as filter[key]=value)
     const filters = req.query.filter || {};
 
-    // Prepare pagination and sorting objects
     const pagination = { page, limit, sortBy, order };
     const sorting = { sortBy, order };
 
-    // Extract search value
     const searchValue = req.query.search || '';
 
-    // Fetch shipments based on filters, pagination, and sorting
     const shipments = await shipmentModel.getShipments(
       filters,
       pagination,
@@ -69,11 +87,9 @@ export const getAllShipments = async (req, res) => {
       searchValue
     );
 
-    // Fetch total count for pagination
     const total = await shipmentModel.getTotalCount(filters, searchValue);
     const totalPages = Math.ceil(total / limit);
 
-    // Respond with standardized success response
     res.json({
       data: shipments,
       pagination: {
@@ -85,7 +101,6 @@ export const getAllShipments = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching shipments:', error.message);
-    // Respond with standardized error response
     res.status(500).json({ error: error.message });
   }
 };

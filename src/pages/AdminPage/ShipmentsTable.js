@@ -6,6 +6,7 @@ import { SHIPMENT_STATUSES_MAP } from '../../constants';
 import useDebounce from '../../hooks/useDebounce';
 import { EditOutlined } from '@ant-design/icons';
 import ShipmentModal from './ShipmentModal';
+import AddOrphanShipmentModal from './AddOrphanShipmentModal';
 
 const { Column } = Table;
 
@@ -23,6 +24,8 @@ const ShipmentsTable = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState();
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const [isReloadRequired, toggleReloadRequired] = useState(false);
 
@@ -95,8 +98,29 @@ const ShipmentsTable = () => {
     setModalOpen(false);
   };
 
+  const onShipmentCreated = () => {
+    toggleReloadRequired(!isReloadRequired);
+    setIsCreateModalOpen(false);
+  };
+
   return (
     <div>
+      <div
+        style={{
+          marginBottom: 20,
+        }}
+      >
+        <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
+          Добавить отправление
+        </Button>
+
+        <AddOrphanShipmentModal
+          open={isCreateModalOpen}
+          onCreate={onShipmentCreated}
+          onCancel={() => setIsCreateModalOpen(false)}
+        />
+      </div>
+
       <div
         style={{
           marginBottom: 20,
@@ -140,7 +164,13 @@ const ShipmentsTable = () => {
             title="Телефон"
             dataIndex="userPhone"
             key="userPhone"
-            render={(phone) => '+7 ' + phone}
+            render={(phone) => {
+              if (phone) {
+                return '+7 ' + phone;
+              } else {
+                return <span style={{ color: '#900' }}>Не указан</span>;
+              }
+            }}
           />
           <Column
             title="Создано"
@@ -153,6 +183,11 @@ const ShipmentsTable = () => {
             dataIndex="updatedAt"
             key="updatedAt"
             render={(date) => dayjs(date).format('DD/MM/YYYY')}
+          />
+          <Column
+            title={'Комментарий'}
+            dataIndex={'adminNote'}
+            key={'adminNote'}
           />
           <Column
             title="Action"

@@ -13,19 +13,15 @@ const LoginPage = () => {
   const [isFormLoading, setIsFormLoading] = useState(false);
 
   useEffect(() => {
-    // Check if token exists
     const token = localStorage.getItem('token');
 
     if (token) {
       try {
-        // Decode token to check expiration
         const decodedToken = jwtDecode(token);
         const currentTime = Date.now() / 1000; // current time in seconds
 
-        // Check if token is not expired
         if (decodedToken.exp > currentTime) {
-          // If valid, redirect to the app
-          navigate('/dashboard'); // or your app's main route
+          navigate('/dashboard');
         }
       } catch (error) {
         console.error('Invalid token or decoding error');
@@ -37,16 +33,14 @@ const LoginPage = () => {
     setIsFormLoading(true);
     try {
       const response = await authApi.login(values.phone, values.password);
-      const token = response.token;
+      const { token, user } = response;
 
       if (token) {
         localStorage.setItem('token', response.token);
-        const user = await authApi.getUserById(response.user.id);
 
         if (user.role === 'admin') {
           navigate('/admin');
         } else {
-          console.log(user);
           localStorage.setItem('user', JSON.stringify(user));
           navigate('/dashboard');
         }

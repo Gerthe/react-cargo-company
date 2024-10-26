@@ -10,18 +10,49 @@ const SHIPMENT_STATUSES = {
 };
 
 const shipmentModel = {
-  createShipment: async (userId, trackingCode, description) => {
+  statuses: SHIPMENT_STATUSES,
+  createShipment: async ({
+    trackingCode,
+    description,
+    arrivalDate = null,
+    adminNote = null,
+    claimed = 0,
+    deliverTo = null,
+    userId = null,
+    status = SHIPMENT_STATUSES.CREATED,
+    createdBy,
+  }) => {
     try {
       const pool = db.getPool();
+
       const [results] = await pool.query(
-        'INSERT INTO shipments (userId, trackingCode, description, status) VALUES (?, ?, ?, ?)',
-        [userId, trackingCode, description, SHIPMENT_STATUSES.CREATED]
+        `INSERT INTO shipments 
+          (trackingCode, description, arrivalDate, adminNote, claimed, deliverTo, userId, status, createdBy)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          trackingCode,
+          description,
+          arrivalDate,
+          adminNote,
+          claimed,
+          deliverTo,
+          userId,
+          status,
+          createdBy,
+        ]
       );
+
       return {
         id: results.insertId,
         trackingCode,
         description,
-        status: SHIPMENT_STATUSES.CREATED,
+        arrivalDate,
+        adminNote,
+        claimed,
+        deliverTo,
+        userId,
+        status,
+        createdBy,
       };
     } catch (err) {
       throw new Error('Error inserting shipment: ' + err.message);
@@ -32,18 +63,12 @@ const shipmentModel = {
       const pool = db.getPool();
       const query = `
         SELECT
-          shipments.id,
-          shipments.status,
-          shipments.trackingCode,
-          shipments.createdAt,
-          shipments.updatedAt,
-          shipments.description,
-          shipments.deliverTo,
+          shipments.*,
           users.phone AS userPhone,
           users.name AS userName,
           users.id AS userId
         FROM shipments
-        JOIN users ON shipments.userId = users.id
+        LEFT JOIN users ON shipments.userId = users.id
         WHERE shipments.id = ?
     `;
 
@@ -79,18 +104,12 @@ const shipmentModel = {
 
     let query = `
     SELECT 
-      shipments.id, 
-      shipments.status,
-      shipments.trackingCode, 
-      shipments.createdAt, 
-      shipments.updatedAt, 
-      shipments.description, 
-      shipments.deliverTo,
+      shipments.*,
       users.phone AS userPhone,
       users.name AS userName,
       users.id AS userId
     FROM shipments
-    JOIN users ON shipments.userId = users.id
+    LEFT JOIN users ON shipments.userId = users.id
     WHERE 1=1
   `;
     const values = [];
@@ -151,11 +170,17 @@ const shipmentModel = {
   getUserActiveShipments: async (userId) => {
     try {
       const pool = db.getPool();
+      const selectFields = `
+        shipments.id,
+        shipments.status,
+        shipments.trackingCode,
+        shipments.createdAt,
+        shipments.deliverTo
+      `;
       const [results] = await pool.query(
-        'SELECT * FROM shipments WHERE status != ? AND userId = ? ORDER BY updatedAt DESC',
+        `SELECT ${selectFields} FROM shipments WHERE status != ? AND userId = ? ORDER BY updatedAt DESC`,
         [SHIPMENT_STATUSES.DELIVERED, userId]
       );
-      //TODO canceled status
 
       return results;
     } catch (err) {
@@ -165,8 +190,15 @@ const shipmentModel = {
   getUserInactiveShipments: async (userId) => {
     try {
       const pool = db.getPool();
+      const selectFields = `
+        shipments.id,
+        shipments.status,
+        shipments.trackingCode,
+        shipments.createdAt,
+        shipments.deliverTo
+      `;
       const [results] = await pool.query(
-        'SELECT * FROM shipments WHERE status = ? AND userId = ? ORDER BY updatedAt DESC',
+        `SELECT ${selectFields} FROM shipments WHERE status = ? AND userId = ? ORDER BY updatedAt DESC`,
         [SHIPMENT_STATUSES.DELIVERED, userId]
       );
 
@@ -239,6 +271,21 @@ const shipmentModel = {
       return results[0];
     } catch (err) {
       throw new Error('Error getting shipment: ' + err.message);
+    }
+  },
+  claim: async (id, userId) => {
+    try {
+      const pool = db.getPool();
+      const [results] = await pool.query(
+        'UPDATE shipments SET userId = ?, claimed = 1 WHERE id = ?',
+        [userId, id]
+      );
+
+      console.log(results);
+
+      return results;
+    } catch (err) {
+      throw new Error('Error claiming shipment: ' + err.message);
     }
   },
 };
