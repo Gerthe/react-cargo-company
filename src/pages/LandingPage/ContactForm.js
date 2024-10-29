@@ -7,6 +7,9 @@ import { flexTwoColumnsConfig } from '../../theme';
 
 const TextArea = Input.TextArea;
 
+const email = 'ashalmuhanova@gmail.com';
+const phone = '+77761234588';
+
 const ContactForm = () => {
   const [form] = Form.useForm();
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -58,10 +61,16 @@ const ContactForm = () => {
             }}
           />
           <div>
-            Готовы обсудить детали? Свяжитесь с нами по телефону +77761234588
-            или отправьте нам сообщение через форму обратной связи. Наши
-            специалисты всегда готовы ответить на все ваши вопросы и
-            предоставить необходимую поддержку.
+            <p>
+              Готовы обсудить детали? Свяжитесь с нами по телефону{' '}
+              <a href={'tel:' + phone}>{phone}</a> или отправьте нам сообщение
+              через форму обратной связи. Наши специалисты всегда готовы
+              ответить на все ваши вопросы и предоставить необходимую поддержку.
+            </p>
+            <p>
+              Также вы можете написать нам на почту:{' '}
+              <a href={'mailto:' + email}>{email}</a>
+            </p>
           </div>
         </Col>
         <Col {...flexTwoColumnsConfig}>

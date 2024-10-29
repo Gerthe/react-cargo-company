@@ -3,6 +3,7 @@ import { Table, Button, Input } from 'antd';
 import dayjs from 'dayjs';
 import usersApi from '../../api/users.api';
 import useDebounce from '../../hooks/useDebounce';
+import { useNavigate } from 'react-router-dom';
 
 const { Column } = Table;
 
@@ -15,6 +16,7 @@ const UsersTable = () => {
     current: 1,
     pageSize: 10,
   });
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     const { value } = e.target;
@@ -22,7 +24,6 @@ const UsersTable = () => {
   };
 
   useEffect(() => {
-    console.log('fetching users');
     const fetchUsers = async () => {
       try {
         setLoading(true);
@@ -44,16 +45,15 @@ const UsersTable = () => {
       }
     };
 
-    // Fetch shipments when pagination, sorter, or filters change
     fetchUsers();
   }, [pagination.pageSize, debouncedSearchValue, pagination.current]);
 
+  const redirectToShipmentsSortedByUser = (phone) => {
+    navigate('?tab=shipments&phone=' + phone);
+  };
+
   const handleTableChange = (newPagination) => {
     setPagination(newPagination);
-
-    console.log(newPagination);
-
-    // `dataSource` is useless since `pageSize` changed
     if (pagination.pageSize !== newPagination.pageSize) {
       setUsers([]);
     }
@@ -88,7 +88,14 @@ const UsersTable = () => {
           title="Заказы"
           dataIndex="shipmentsCount"
           key="shipmentsCount"
-          render={(count) => <Button type="link">{count}</Button>}
+          render={(count, record) => (
+            <Button
+              type="link"
+              onClick={() => redirectToShipmentsSortedByUser(record.phone)}
+            >
+              {count}
+            </Button>
+          )}
         />
         <Column
           title="Создан"

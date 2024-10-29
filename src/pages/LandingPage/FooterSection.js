@@ -1,7 +1,12 @@
 import React from 'react';
-import { Col, Flex, Row, Space } from 'antd';
-import { MailTwoTone, PhoneTwoTone, TikTokOutlined } from '@ant-design/icons';
+import { Col, Divider, Row } from 'antd';
+import Icon, {
+  InstagramOutlined,
+  PhoneFilled,
+  TikTokOutlined,
+} from '@ant-design/icons';
 import { flexTwoColumnsConfig } from '../../theme';
+import { TelegramIcon } from '../../constants/customIcons';
 
 const items = [
   { key: 'services', label: 'Услуги' },
@@ -10,71 +15,130 @@ const items = [
   { key: 'faq', label: 'FAQ' },
 ];
 
+const iconSize = 27;
+const linkProps = {
+  rel: 'noreferrer',
+  target: '_blank',
+};
+const dividerStyle = {
+  borderColor: 'var(--secondary)',
+  color: 'var(--accent)',
+};
+
+const socialLinks = [
+  {
+    key: 'phone',
+    link: 'tel:+77761234588',
+    title: '+77761234588',
+    icon: (
+      <PhoneFilled style={{ fontSize: iconSize, color: 'var(--secondary)' }} />
+    ),
+  },
+  {
+    key: 'tiktok',
+    link: 'https://www.tiktok.com/@pekin_cargo_888',
+    title: 'Наш TikTok',
+    icon: (
+      <TikTokOutlined
+        style={{ color: 'var(--secondary)', fontSize: iconSize }}
+      />
+    ),
+    linkProps,
+  },
+  {
+    key: 'instagram',
+    link: 'https://www.instagram.com/pekin_cargo_888/',
+    title: 'pekin_cargo_888',
+    icon: (
+      <InstagramOutlined
+        style={{ color: 'var(--secondary)', fontSize: iconSize }}
+      />
+    ),
+    linkProps,
+  },
+  {
+    key: 'telegram',
+    link: 'https://t.me/pekin_cargo_888',
+    title: '@pekin_cargo_888',
+    icon: (
+      <Icon
+        component={TelegramIcon}
+        style={{ fontSize: iconSize, color: 'var(--secondary)' }}
+      />
+    ),
+    linkProps,
+  },
+];
+
 const FooterSection = () => {
   return (
-    <footer>
-      <Row className="wrapper" justify="space-between">
-        <Col {...flexTwoColumnsConfig} style={{ textAlign: 'left' }}>
-          {items.map((item) => (
-            <div key={item.key}>
-              <a
-                href={'#' + item.key}
+    <footer className="wrapper">
+      <Row
+        justify="space-between"
+        gutter={20}
+        style={{
+          textAlign: 'left',
+        }}
+      >
+        <Col {...flexTwoColumnsConfig}>
+          <Divider style={dividerStyle}>Навигация</Divider>
+          <ul>
+            {items.map((item) => (
+              <li
+                key={item.key}
                 style={{
-                  color: 'var(--secondary)',
-                  fontSize: 18,
-                  lineHeight: 1.5,
+                  listStyleType: 'none',
                 }}
               >
-                {item.label}
-              </a>
-            </div>
-          ))}
+                <a
+                  href={'#' + item.key}
+                  style={{
+                    color: 'var(--secondary)',
+                    fontSize: 18,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </Col>
-        <Col>
-          <Flex
-            vertical
-            className="contact-info"
-            gap="small"
-            style={{
-              fontSize: 18,
-              fontWeight: 500,
-            }}
-          >
-            <Space>
-              <PhoneTwoTone twoToneColor="#7AC74F" style={{ fontSize: 24 }} />
-              <a href="tel:+77761234588" style={{ color: 'var(--secondary)' }}>
-                +77761234588
-              </a>
-            </Space>
-            <Space>
-              <MailTwoTone twoToneColor="#7AC74F" style={{ fontSize: 24 }} />
-              <a
-                href="mailto:+77761234588"
-                style={{ color: 'var(--secondary)' }}
+        <Col {...flexTwoColumnsConfig}>
+          <Divider style={dividerStyle}>Контакты</Divider>
+          <ul>
+            {socialLinks.map((link) => (
+              <li
+                key={link.key}
+                style={{
+                  listStyleType: 'none',
+                }}
               >
-                ashalmuhanova@gmail.com
-              </a>
-            </Space>
-            <Space>
-              <TikTokOutlined
-                style={{ color: 'var(--secondary)', fontSize: 24 }}
-              />
-              <a
-                href="https://www.tiktok.com/@pekin_cargo_888"
-                rel="noreferrer"
-                target="_blank"
-                style={{ color: 'var(--secondary)' }}
-              >
-                Наш TikTok
-              </a>
-            </Space>
-          </Flex>
+                {link.icon}
+                <a
+                  href={link.link}
+                  {...link.linkProps}
+                  style={{
+                    color: 'var(--secondary)',
+                    fontSize: 18,
+                    lineHeight: 1.5,
+                    paddingLeft: 10,
+                  }}
+                >
+                  {link.title}
+                </a>
+              </li>
+            ))}
+          </ul>
         </Col>
       </Row>
-
       <Row>
+        <Divider style={dividerStyle} />
         <Col span={24} style={{ marginTop: 20 }}>
-          Pekin Cargo 888 ©{new Date().getFullYear()} Created by Gerthe
+          Pekin Cargo 888 © {new Date().getFullYear()} Created by{' '}
+          <a href="mailto:julkuleshova@gmail.com" style={{ color: '#900' }}>
+            Gerthe
+          </a>
         </Col>
       </Row>
     </footer>

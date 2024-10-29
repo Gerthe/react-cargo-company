@@ -195,7 +195,8 @@ const shipmentModel = {
         shipments.status,
         shipments.trackingCode,
         shipments.createdAt,
-        shipments.deliverTo
+        shipments.deliverTo,
+        shipments.updatedAt
       `;
       const [results] = await pool.query(
         `SELECT ${selectFields} FROM shipments WHERE status = ? AND userId = ? ORDER BY updatedAt DESC`,

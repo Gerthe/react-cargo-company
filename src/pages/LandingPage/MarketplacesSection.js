@@ -1,4 +1,4 @@
-import { Col, Image, Row, Space, Typography, Grid } from 'antd';
+import { Col, Image, Row, Space, Typography, Grid, Divider } from 'antd';
 import { flexTwoColumnsConfig } from '../../theme';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import React from 'react';
@@ -42,13 +42,34 @@ const MarketplacesSection = () => {
           </Col>
           <Col {...flexTwoColumnsConfig}>
             <Space size="large" gap={20} wrap>
-              <Image src={taobaoLogo} height={logoSize} preview={false} />
-              <Image src={poisonLogo} height={logoSize} preview={false} />
-              <Image src={s1688Logo} height={logoSize} preview={false} />
-              <Image src={pinduoduoLogo} height={logoSize} preview={false} />
+              <Image
+                src={taobaoLogo}
+                height={logoSize}
+                preview={false}
+                style={{ alignSelf: 'flex-start' }}
+              />
+              <Image
+                src={poisonLogo}
+                height={logoSize}
+                preview={false}
+                style={{ alignSelf: 'flex-start' }}
+              />
+              <Image
+                src={s1688Logo}
+                height={logoSize}
+                preview={false}
+                style={{ alignSelf: 'flex-start' }}
+              />
+              <Image
+                src={pinduoduoLogo}
+                height={logoSize}
+                preview={false}
+                style={{ alignSelf: 'flex-start' }}
+              />
             </Space>
           </Col>
         </Row>
+        <Divider />
         <Row gutter={20}>
           <Col>
             <DoubleRightOutlined style={{ color: 'var(--secondary)' }} /> При
@@ -60,31 +81,48 @@ const MarketplacesSection = () => {
               }}
             >
               <Col {...flexTwoColumnsConfig}>
-                <Typography.Paragraph copyable>
-                  PC-[4 последние цифры вашего номера телефона]
-                </Typography.Paragraph>
-                <Typography.Paragraph copyable>
-                  13521750477
-                </Typography.Paragraph>
-                <Typography.Paragraph copyable>
-                  北京市 朝阳区
-                </Typography.Paragraph>
-                <Typography.Paragraph copyable>
-                  朝外大街26号 朝外门地下三层816库房 PekinCargo888 [Номер
-                  телефона, имя, город получателя]
-                </Typography.Paragraph>
+                <div
+                  style={{
+                    padding: 10,
+                    borderRadius: 5,
+                    backgroundColor: '#f0fff0',
+                    border: '1px solid #87d068',
+                  }}
+                >
+                  <Typography.Paragraph
+                    copyable={{
+                      text: 'PC-[4 последние цифры вашего номера телефона] 13521750477 北京市 朝阳区 朝外大街26号 朝外门地下三层816库房 PekinCargo888 [Номер телефона, имя, город получателя]',
+                    }}
+                  >
+                    PC-[4 последние цифры вашего номера телефона]
+                    <br />
+                    13521750477
+                    <br />
+                    北京市 朝阳区
+                    <br />
+                    朝外大街26号 朝外门地下三层816库房 PekinCargo888 [Номер
+                    телефона, имя, город получателя]
+                  </Typography.Paragraph>
+                </div>
               </Col>
 
               <Col {...flexTwoColumnsConfig} justify="center">
                 <Image
                   src={screenShot}
                   preview={isMobile}
-                  style={{ margin: '0 auto', display: 'block', width: '50%' }}
+                  style={{
+                    margin: '0 auto 20px',
+                    display: 'block',
+                    width: '50%',
+                  }}
                 />
               </Col>
             </Row>
-            Мы принимаем ваш товар, тщательно проверяем и подготавливаем его к
-            отправке. Ваш груз будет в надежных руках, пока не отправится к вам!
+            <Typography.Paragraph>
+              Мы принимаем ваш товар, тщательно проверяем и подготавливаем его к
+              отправке. Ваш груз будет в надежных руках, пока не отправится к
+              вам!
+            </Typography.Paragraph>
           </Col>
         </Row>
       </div>

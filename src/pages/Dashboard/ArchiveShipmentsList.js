@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import shipmentsApi from '../../api/shipments.api';
-import { Card } from 'antd';
+import dayjs from 'dayjs';
+import { CheckCircleFilled } from '@ant-design/icons';
 
 const ArchiveShipmentsList = () => {
   const [shipments, setShipments] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  //TODO: padination?
 
   useEffect(() => {
     const fetchShipments = async () => {
@@ -27,43 +30,54 @@ const ArchiveShipmentsList = () => {
       {loading && <p>Загрузка...</p>}
 
       {shipments?.map((shipment) => (
-        <Card
+        <div
           key={shipment.trackingCode}
-          title={
-            <div>
-              <div
-                style={{
-                  textTransform: 'uppercase',
-                  fontSize: 20,
-                  marginTop: 20,
-                  color: 'var(--main)',
-                  fontWeight: 'bold',
-                }}
-              >
-                {shipment.trackingCode}
-              </div>
-              <div
-                style={{
-                  fontSize: 16,
-                  color: '#a1a1b2',
-                  padding: '10px 0 15px',
-                }}
-              >
-                {shipment.description}
-              </div>
-            </div>
-          }
           style={{
             width: '100%',
+            padding: 20,
+            backgroundColor: 'var(--light)',
+            marginBottom: 20,
+            borderRadius: 5,
+            border: '1px solid #f0f0f0',
           }}
         >
-          {shipment.updatedAt}
-        </Card>
+          <span style={{ color: 'var(--secondary)' }}>
+            <CheckCircleFilled
+              style={{
+                color: 'var(--secondary)',
+                marginRight: 5,
+              }}
+            />
+            <strong>
+              ДОСТАВЛЕН {dayjs(shipment.updatedAt).format('DD.MM.YYYY HH:mm')}
+            </strong>
+          </span>
+          <div
+            style={{
+              textTransform: 'uppercase',
+              fontSize: 24,
+              color: 'var(--main)',
+              fontWeight: 'bold',
+            }}
+          >
+            {shipment.trackingCode}
+          </div>
+
+          <div
+            style={{
+              fontSize: 20,
+              color: '#a1a1b2',
+              marginTop: 10,
+            }}
+          >
+            {shipment.description}
+          </div>
+        </div>
       ))}
 
       {!shipments.length && (
         <div>
-          <p>У Вас пока нет полученных отправлений</p>
+          <p>У Вас ещё нет полученных отправлений</p>
         </div>
       )}
     </div>

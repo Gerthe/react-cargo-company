@@ -5,7 +5,7 @@ import { TikTok } from 'react-tiktok';
 import { flexTwoColumnsConfig } from '../../theme';
 
 const videoUrl =
-  'https://www.tiktok.com/@yourcat0222/video/7226469547300146433';
+  'https://www.tiktok.com/@pekin_cargo_888/video/7431127863824256262';
 
 const VideoSection = () => {
   return (
@@ -23,15 +23,16 @@ const VideoSection = () => {
               товаров — от приема и сортировки до упаковки и отправки.
             </p>
             <p>
-              {' '}
-              Каждое видео — это возможность увидеть нашу команду в действии,
-              познакомиться с нашими современными складскими технологиями и
+              Каждое видео — это возможность увидеть нашу команду в действии и
               убедиться в нашей надежности. Присоединяйтесь к нашему сообществу
               на TikTok, следите за обновлениями и будьте в курсе всех новостей
               и полезных советов по логистике и доставке из Китая.
             </p>
           </Col>
-          <Col {...flexTwoColumnsConfig} style={{ width: 410, height: 770 }}>
+          <Col
+            {...flexTwoColumnsConfig}
+            style={{ width: 590, height: 879, marginBottom: 20 }}
+          >
             <TikTok url={videoUrl} />
           </Col>
         </Row>

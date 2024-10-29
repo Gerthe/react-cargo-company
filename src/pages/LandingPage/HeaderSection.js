@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import '../../components/Header.css';
 import { Col, Flex, Menu, Row, Grid } from 'antd';
-import {
+import Icon, {
+  InstagramOutlined,
   LoginOutlined,
-  MailTwoTone,
   PhoneTwoTone,
   TikTokOutlined,
 } from '@ant-design/icons';
 import image from '../../assets/085.svg';
 import { Link } from 'react-router-dom';
+import { TelegramIcon } from '../../constants/customIcons';
 
 const { useBreakpoint } = Grid;
 
@@ -19,6 +20,11 @@ const items = [
   { key: 'marketplaces', label: <a href="#marketplaces">Как заказать</a> },
   { key: 'faq', label: <a href="#faq">FAQ</a> },
 ];
+
+const linkProps = {
+  rel: 'noreferrer',
+  target: '_blank',
+};
 
 const HeaderSection = () => {
   const [current, setCurrent] = useState();
@@ -40,14 +46,6 @@ const HeaderSection = () => {
       ),
     },
     {
-      key: 'email',
-      link: 'mailto:+77761234588',
-      title: 'ashalmuhanova@gmail.com',
-      icon: (
-        <MailTwoTone twoToneColor="#7AC74F" style={{ fontSize: iconSize }} />
-      ),
-    },
-    {
       key: 'tiktok',
       link: 'https://www.tiktok.com/@pekin_cargo_888',
       title: 'Наш TikTok',
@@ -56,10 +54,30 @@ const HeaderSection = () => {
           style={{ color: 'var(--secondary)', fontSize: iconSize }}
         />
       ),
-      linkProps: {
-        rel: 'noreferrer',
-        target: '_blank',
-      },
+      linkProps,
+    },
+    {
+      key: 'instagram',
+      link: 'https://www.instagram.com/pekin_cargo_888/',
+      title: 'pekin_cargo_888',
+      icon: (
+        <InstagramOutlined
+          style={{ color: 'var(--secondary)', fontSize: iconSize }}
+        />
+      ),
+      linkProps,
+    },
+    {
+      key: 'telegram',
+      link: 'https://t.me/pekin_cargo_888',
+      title: '@pekin_cargo_888',
+      icon: (
+        <Icon
+          component={TelegramIcon}
+          style={{ fontSize: iconSize, color: 'var(--secondary)' }}
+        />
+      ),
+      linkProps,
     },
   ];
 
@@ -81,7 +99,9 @@ const HeaderSection = () => {
       <div className="wrapper">
         <Row justify="space-between">
           <Col>
-            <img src={image} className="logo-accent" alt="Pekin Cargo 888" />
+            {showFull && (
+              <img src={image} className="logo-accent" alt="Pekin Cargo 888" />
+            )}
             <div style={{ position: 'relative' }}>
               <h1>
                 Pekin
@@ -129,8 +149,9 @@ const HeaderSection = () => {
             fontSize: 20,
             lineHeight: 2,
             fontWeight: 'bold',
-            borderBottom: 0,
             margin: '12px 0',
+            backgroundColor: 'var(--light)',
+            color: 'var(--main)',
           }}
         />
 

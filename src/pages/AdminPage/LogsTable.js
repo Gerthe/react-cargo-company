@@ -14,7 +14,7 @@ const LogsTable = () => {
   const debouncedSearchValue = useDebounce(searchValue, 500);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 50,
+    pageSize: 20,
   });
   const [sorter, setSorter] = useState({});
   const [filters, setFilters] = useState({});

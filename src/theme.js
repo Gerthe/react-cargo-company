@@ -40,10 +40,10 @@ export const flexTwoColumnsConfig = {
 
 export const headerStyle = {
   textAlign: 'center',
-  height: 280,
+  height: 292,
   lineHeight: '24px',
   backgroundColor: 'var(--light)',
-  padding: '24px 0',
+  padding: 0,
 };
 
 export const footerStyle = {

@@ -7,13 +7,17 @@ import useDebounce from '../../hooks/useDebounce';
 import { EditOutlined } from '@ant-design/icons';
 import ShipmentModal from './ShipmentModal';
 import AddOrphanShipmentModal from './AddOrphanShipmentModal';
+import { useSearchParams } from 'react-router-dom';
 
 const { Column } = Table;
 
 const ShipmentsTable = () => {
   const [shipments, setShipments] = useState();
   const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  let [searchParams] = useSearchParams();
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get('phone') || ''
+  );
   const debouncedSearchValue = useDebounce(searchValue, 500);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -73,6 +77,10 @@ const ShipmentsTable = () => {
     isReloadRequired,
   ]);
 
+  useEffect(() => {
+    setSearchValue(searchParams.get('phone') || '');
+  }, [searchParams]);
+
   const handleTableChange = (newPagination, newFilters, newSorter) => {
     console.log(pagination, filters, sorter);
     setPagination(newPagination);
@@ -129,6 +137,7 @@ const ShipmentsTable = () => {
         <Input.Search
           placeholder="Введите код отслеживания или телефон"
           onChange={handleSearch}
+          defaultValue={searchValue}
         />
       </div>
 
@@ -164,9 +173,9 @@ const ShipmentsTable = () => {
             title="Телефон"
             dataIndex="userPhone"
             key="userPhone"
-            render={(phone) => {
+            render={(phone, record) => {
               if (phone) {
-                return '+7 ' + phone;
+                return `+7 ${phone} (${record.userName})`;
               } else {
                 return <span style={{ color: '#900' }}>Не указан</span>;
               }

@@ -15,7 +15,7 @@ const StyledCard = ({ title, description, image, style }) => {
 
 StyledCard.propTypes = {
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.node.isRequired,
   image: PropTypes.string,
   style: PropTypes.object,
 };

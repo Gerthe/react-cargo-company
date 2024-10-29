@@ -41,24 +41,36 @@ const AddressInfoPage = () => {
       <Row gutter={20}>
         <Col>
           <Typography.Paragraph>
-            {' '}
             При заполнении адреса доставки укажите следующие данные как в
             примере:
           </Typography.Paragraph>
 
-          <Typography.Paragraph copyable strong>
-            PC-{user?.phone?.slice(-4)}
-          </Typography.Paragraph>
-          <Typography.Paragraph copyable strong>
-            13521750477
-          </Typography.Paragraph>
-          <Typography.Paragraph copyable strong>
-            北京市 朝阳区
-          </Typography.Paragraph>
-          <Typography.Paragraph copyable strong>
-            朝外大街26号 朝外门地下三层816库房 PekinCargo888 +7{user?.phone}{' '}
-            {user?.name} {user?.location}
-          </Typography.Paragraph>
+          <div
+            style={{
+              padding: 10,
+              borderRadius: 5,
+              backgroundColor: '#f0fff0',
+              border: '1px solid #87d068',
+              marginBottom: 20,
+            }}
+          >
+            <Typography.Paragraph
+              copyable={{
+                text: `PC-${user?.phone?.slice(-4)}\n13521750477\n北京市 朝阳区\n朝外大街26号 朝外门地下三层816库房 PekinCargo888 +7${user?.phone} ${user?.name} ${user?.location}`,
+              }}
+            >
+              PC-{user?.phone?.slice(-4)}
+              <br />
+              13521750477
+              <br />
+              北京市 朝阳区
+              <br />
+              朝外大街26号 朝外门地下三层816库房 PekinCargo888 +7{
+                user?.phone
+              }{' '}
+              {user?.name} {user?.location}
+            </Typography.Paragraph>
+          </div>
 
           <Image
             src={screenShot}
