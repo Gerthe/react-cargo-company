@@ -25,7 +25,7 @@ const logModel = {
       throw new Error('Error getting logs: ' + err.message);
     }
   },
-  getLogs: async (pagination, sorting, searchValue) => {
+  getAll: async (filters, pagination, sorting, searchValue) => {
     const {
       page = 1,
       limit = 10,
@@ -34,7 +34,6 @@ const logModel = {
     } = pagination;
 
     const sortableFields = ['id', 'shipmentId', 'adminId', 'changedAt'];
-
     const orderOptions = ['ASC', 'DESC'];
 
     const safeSortBy = sortableFields.includes(sortBy) ? sortBy : 'changedAt';
@@ -44,12 +43,7 @@ const logModel = {
 
     let query = `
       SELECT
-        admin_logs.id,
-        admin_logs.shipmentId,
-        admin_logs.adminId,
-        admin_logs.changedAt,
-        admin_logs.previousStatus,
-        admin_logs.newStatus,
+        admin_logs.*,
         shipments.trackingCode AS trackingCode
       FROM admin_logs
       JOIN shipments ON admin_logs.shipmentId = shipments.id
@@ -80,23 +74,21 @@ const logModel = {
     }
   },
   getTotalCount: async (searchValue) => {
-    let query = `
-    SELECT COUNT(*) AS total 
-    FROM admin_logs
-    JOIN shipments ON admin_logs.shipmentId = shipments.id
-    WHERE 1=1
-  `;
+    let query = `SELECT COUNT(*) as count 
+             FROM admin_logs
+             LEFT JOIN shipments ON admin_logs.shipmentId = shipments.id`;
+
     const values = [];
 
     if (searchValue) {
-      query += 'AND shipments.trackingCode LIKE ? ';
+      query += ` AND shipments.trackingCode LIKE ?`;
       values.push(`%${searchValue}%`);
     }
 
     try {
       const pool = db.getPool();
       const [results] = await pool.query(query, values);
-      return results[0].total;
+      return results[0].count;
     } catch (err) {
       throw new Error('Error getting total count: ' + err.message);
     }

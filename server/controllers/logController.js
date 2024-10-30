@@ -1,4 +1,5 @@
 import logModel from '../models/logModel.js';
+import { fetchWithPagination } from '../services/genericService.js';
 
 export const log = async (req, res) => {
   const { shipmentId, adminId, prevStatus, newStatus } = req.body;
@@ -33,19 +34,22 @@ export const getAllLogs = async (req, res) => {
   try {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
-    const sortBy = req.query.sortBy || 'createdAt';
-    const order = req.query.order || 'DESC';
     const filters = req.query.filter || {};
-    const pagination = { page, limit, sortBy, order };
     const searchValue = req.query.search || '';
+    const pagination = { page, limit };
 
-    const logs = await logModel.getLogs(filters, pagination, searchValue);
+    const { data, total, totalPages } = await fetchWithPagination(
+      logModel,
+      filters,
+      pagination,
+      null,
+      searchValue
+    );
 
-    const total = await logModel.getTotalCount(filters, searchValue);
-    const totalPages = Math.ceil(total / limit);
+    console.log(total, totalPages);
 
     res.json({
-      data: logs,
+      data,
       pagination: {
         page,
         limit,

@@ -37,7 +37,6 @@ const DashboardLayout = () => {
   const isLogged = authApi.isLogged();
 
   const userFromStorage = JSON.parse(localStorage.getItem('user'));
-  console.log(userFromStorage);
 
   const logout = () => {
     authApi.logout();

@@ -4,6 +4,7 @@ import UsersTable from './UsersTable';
 import ShipmentsTable from './ShipmentsTable';
 import LogsTable from './LogsTable';
 import { useSearchParams } from 'react-router-dom';
+import Settings from './Settings';
 
 const AdminPage = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -31,6 +32,12 @@ const AdminPage = () => {
       label: 'Логи',
       children: <LogsTable />,
     },
+    {
+      key: 'settings',
+      label: 'Настройки',
+      children: <Settings />,
+      disabled: true,
+    },
   ];
 
   const handleTabChange = (key) => {
@@ -41,7 +48,12 @@ const AdminPage = () => {
   return (
     <div>
       <h1>Панель управления</h1>
-      <Tabs activeKey={activeTab} onChange={handleTabChange} items={tabItems} />
+      <Tabs
+        activeKey={activeTab}
+        onChange={handleTabChange}
+        items={tabItems}
+        destroyInactiveTabPane
+      />
     </div>
   );
 };

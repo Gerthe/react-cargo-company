@@ -26,7 +26,7 @@ const LogsTable = () => {
 
         // Call the API with pagination, sorter, and filters
         const response = await logsApi.getLogs(
-          pagination,
+          { page: pagination.current, limit: pagination.pageSize },
           sorter,
           filters,
           debouncedSearchValue
@@ -63,7 +63,6 @@ const LogsTable = () => {
   };
 
   const handleTableChange = (newPagination, newFilters, newSorter) => {
-    console.log(pagination, filters, sorter);
     setPagination(newPagination);
     setSorter(newSorter);
     setFilters(newFilters);

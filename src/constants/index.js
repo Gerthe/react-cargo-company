@@ -29,7 +29,7 @@ export const SHIPMENT_STATUSES_ORDERED_DEFAULT = [
 export const SHIPMENT_STATUSES_MAP = {
   [SHIPMENT_STATUSES.CREATED]: {
     title: 'Создан',
-    color: 'blue',
+    color: 'green',
   },
   [SHIPMENT_STATUSES.CHINA_WAREHOUSE]: {
     title: 'На складе в Китае',
@@ -37,7 +37,7 @@ export const SHIPMENT_STATUSES_MAP = {
   },
   [SHIPMENT_STATUSES.CHINA_WAREHOUSE_SENT]: {
     title: 'Отправлен из Китая',
-    color: 'green',
+    color: 'blue',
   },
   [SHIPMENT_STATUSES.ALMATY_WAREHOUSE]: {
     title: 'На складе в Алматы',
@@ -45,11 +45,11 @@ export const SHIPMENT_STATUSES_MAP = {
   },
   [SHIPMENT_STATUSES.TRANSIT]: {
     title: 'В пути',
-    color: 'purple',
+    color: 'geekblue',
   },
   [SHIPMENT_STATUSES.LOCAL_WAREHOUSE]: {
     title: 'На местном складе',
-    color: 'magenta',
+    color: 'purple',
   },
   [SHIPMENT_STATUSES.DELIVERED]: {
     title: 'Доставлен',

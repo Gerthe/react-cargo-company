@@ -282,8 +282,6 @@ const shipmentModel = {
         [userId, id]
       );
 
-      console.log(results);
-
       return results;
     } catch (err) {
       throw new Error('Error claiming shipment: ' + err.message);

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Table, Tag, Empty, Tooltip, Button } from 'antd';
+import { Input, Table, Tag, Empty, Tooltip, Button, Space, Select } from 'antd';
 import dayjs from 'dayjs';
 import shipmentsApi from '../../api/shipments.api';
-import { SHIPMENT_STATUSES_MAP } from '../../constants';
-import useDebounce from '../../hooks/useDebounce';
+import {
+  SHIPMENT_STATUSES_MAP,
+  SHIPMENT_STATUSES_ORDERED,
+} from '../../constants';
 import { EditOutlined } from '@ant-design/icons';
 import ShipmentModal from './ShipmentModal';
 import AddOrphanShipmentModal from './AddOrphanShipmentModal';
@@ -14,11 +16,10 @@ const { Column } = Table;
 const ShipmentsTable = () => {
   const [shipments, setShipments] = useState();
   const [loading, setLoading] = useState(false);
-  let [searchParams] = useSearchParams();
+  let [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(
-    searchParams.get('phone') || ''
+    searchParams.get('searchValue') || ''
   );
-  const debouncedSearchValue = useDebounce(searchValue, 500);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 20,
@@ -28,13 +29,11 @@ const ShipmentsTable = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState();
-
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
   const [isReloadRequired, toggleReloadRequired] = useState(false);
 
-  const handleSearch = (e) => {
-    const { value } = e.target;
+  const handleSearch = (value) => {
+    setSearchParams({ tab: 'shipments' });
     setSearchValue(value);
   };
 
@@ -43,18 +42,13 @@ const ShipmentsTable = () => {
       try {
         setLoading(true);
 
-        // Call the API with pagination, sorter, and filters
         const response = await shipmentsApi.getShipments(
-          pagination,
+          { page: pagination.current, limit: pagination.pageSize },
           sorter,
           filters,
-          debouncedSearchValue
+          searchValue
         );
-
-        // Update the shipments state with the fetched data
         setShipments(response.data);
-
-        // Update pagination, if needed
         setPagination({
           ...pagination,
           total: response.pagination.total,
@@ -66,28 +60,26 @@ const ShipmentsTable = () => {
       }
     };
 
-    // Fetch shipments when pagination, sorter, or filters change
-    fetchShipments();
+    if (
+      searchParams.get('tab') === 'shipments' ||
+      searchParams.get('tab') === null
+    ) {
+      fetchShipments();
+    }
   }, [
     pagination.current,
     pagination.pageSize,
     sorter,
     filters,
-    debouncedSearchValue,
+    searchValue,
     isReloadRequired,
+    searchParams,
   ]);
 
-  useEffect(() => {
-    setSearchValue(searchParams.get('phone') || '');
-  }, [searchParams]);
-
   const handleTableChange = (newPagination, newFilters, newSorter) => {
-    console.log(pagination, filters, sorter);
     setPagination(newPagination);
     setSorter(newSorter);
     setFilters(newFilters);
-
-    // `dataSource` is useless since `pageSize` changed
     if (pagination.pageSize !== newPagination.pageSize) {
       setShipments([]);
     }
@@ -109,6 +101,29 @@ const ShipmentsTable = () => {
   const onShipmentCreated = () => {
     toggleReloadRequired(!isReloadRequired);
     setIsCreateModalOpen(false);
+  };
+
+  const statusOptions = SHIPMENT_STATUSES_ORDERED.map((status) => ({
+    label: (
+      <>
+        <div
+          style={{
+            width: 10,
+            height: 10,
+            borderRadius: '50%',
+            backgroundColor: `var(--ant-${SHIPMENT_STATUSES_MAP[status].color})`,
+            display: 'inline-block',
+            marginRight: 8,
+          }}
+        />
+        {SHIPMENT_STATUSES_MAP[status].title}
+      </>
+    ),
+    value: status,
+  }));
+
+  const handleStatusChange = (values) => {
+    setFilters({ ...filters, status: values });
   };
 
   return (
@@ -134,11 +149,26 @@ const ShipmentsTable = () => {
           marginBottom: 20,
         }}
       >
-        <Input.Search
-          placeholder="Введите код отслеживания или телефон"
-          onChange={handleSearch}
-          defaultValue={searchValue}
-        />
+        <Space>
+          <Input.Search
+            placeholder="Введите код отслеживания или телефон"
+            onSearch={handleSearch}
+            allowClear
+            defaultValue={searchValue}
+            style={{ width: 400 }}
+            title={'Поиск по коду отслеживания или телефону'}
+          />
+          <Select
+            style={{
+              width: 300,
+            }}
+            placeholder="Статус отправления"
+            onChange={handleStatusChange}
+            options={statusOptions}
+            title="Статус отправления"
+            allowClear
+          />
+        </Space>
       </div>
 
       <div>

@@ -49,7 +49,7 @@ const UsersTable = () => {
   }, [pagination.pageSize, debouncedSearchValue, pagination.current]);
 
   const redirectToShipmentsSortedByUser = (phone) => {
-    navigate('?tab=shipments&phone=' + phone);
+    navigate('?tab=shipments&searchValue=' + phone);
   };
 
   const handleTableChange = (newPagination) => {
