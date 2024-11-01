@@ -167,6 +167,31 @@ const shipmentModel = {
       throw new Error('Error updating shipment status: ' + err.message);
     }
   },
+  updateShipment: async (id, data) => {
+    try {
+      const pool = db.getPool();
+
+      // Check if there are fields to update
+      if (Object.keys(data).length === 0) {
+        throw new Error('No fields to update');
+      }
+
+      // Create the `SET` clause dynamically
+      const updateFields = Object.keys(data)
+        .map((key) => `${key} = ?`)
+        .join(', ');
+      const values = Object.values(data);
+
+      await pool.query(`UPDATE shipments SET ${updateFields} WHERE id = ?`, [
+        ...values,
+        id,
+      ]);
+
+      return await shipmentModel.getShipmentById(id);
+    } catch (err) {
+      throw new Error('Error updating shipment: ' + err.message);
+    }
+  },
   getUserActiveShipments: async (userId) => {
     try {
       const pool = db.getPool();

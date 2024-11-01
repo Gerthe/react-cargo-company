@@ -66,6 +66,7 @@ const ShipmentsTable = () => {
     ) {
       fetchShipments();
     }
+    // eslint-disable-next-line
   }, [
     pagination.current,
     pagination.pageSize,
@@ -229,10 +230,10 @@ const ShipmentsTable = () => {
             key={'adminNote'}
           />
           <Column
-            title="Action"
+            title=""
             key="action"
             render={(value, record) => (
-              <Tooltip title="Изменить статус">
+              <Tooltip title="Редактировать">
                 <Button
                   shape="circle"
                   icon={<EditOutlined />}

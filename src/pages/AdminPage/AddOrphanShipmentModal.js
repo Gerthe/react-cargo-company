@@ -48,7 +48,7 @@ const AddOrphanShipmentModal = ({ open, onCreate, onCancel }) => {
           <Form
             layout="vertical"
             form={form}
-            name="form_in_modal"
+            name="orphan_shipment_form"
             initialValues={{
               deliverTo: WAREHOUSES[0].location,
               arrivalDate: dayjs(),

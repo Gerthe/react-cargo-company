@@ -49,6 +49,7 @@ const LogsTable = () => {
 
     // Fetch shipments when pagination, sorter, or filters change
     fetchShipments();
+    // eslint-disable-next-line
   }, [
     pagination.current,
     pagination.pageSize,

@@ -177,3 +177,35 @@ export const deleteShipment = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const updateShipment = async (req, res) => {
+  const { id } = req.params;
+  const { adminNote, status } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const shipment = await shipmentModel.getShipmentById(id);
+    const user = await userModel.getUserById(userId);
+
+    if (user.role !== 'admin') {
+      return res
+        .status(403)
+        .json({ message: 'You are not authorized to update this shipment' });
+    }
+
+    if (!shipment) {
+      return res.status(404).json({ message: 'Shipment not found' });
+    }
+
+    const shipmentData = {
+      adminNote: adminNote || shipment.adminNote,
+      status: status || shipment.status,
+    };
+
+    const results = await shipmentModel.updateShipment(id, shipmentData);
+
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

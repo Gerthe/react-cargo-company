@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Select, Descriptions, Skeleton } from 'antd';
+import { Modal, Select, Skeleton, Input, message } from 'antd';
 import {
   DEFAULT_LOCATION,
   SHIPMENT_STATUSES_MAP,
@@ -11,13 +11,11 @@ import shipmentsApi from '../../api/shipments.api';
 import PropTypes from 'prop-types';
 
 const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [shipment, setShipment] = useState();
   const [status, setStatus] = useState();
-
-  const handleStatusChange = (value) => {
-    setStatus(value);
-  };
+  const [adminNote, setAdminNote] = useState();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const getShipmentStatusOptions = (shipment) => {
     if (shipment.deliverTo === DEFAULT_LOCATION) {
@@ -34,79 +32,6 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
   };
 
   useEffect(() => {
-    const getItems = (data) => {
-      return [
-        {
-          key: 'trackingCode',
-          label: 'Код отслеживания',
-          children: <strong>{data.trackingCode}</strong>,
-        },
-        {
-          key: 'status',
-          label: 'Статус',
-          children: (
-            <Select
-              defaultValue={data.status}
-              style={{ width: 250 }}
-              onChange={handleStatusChange}
-              options={getShipmentStatusOptions(data)}
-            />
-          ),
-        },
-        {
-          key: 'deliverTo',
-          label: 'Город',
-          children: data.deliverTo,
-        },
-        {
-          key: 'userName',
-          label: 'Имя',
-          children: data.userName ? (
-            data.userName
-          ) : (
-            <span style={{ color: '#900' }}>Не указано</span>
-          ),
-        },
-        {
-          key: 'userPhone',
-          label: 'Телефон',
-          children: data.userPhone ? (
-            '+7' + data.userPhone
-          ) : (
-            <span style={{ color: '#900' }}>Не указан</span>
-          ),
-        },
-        {
-          key: 'description',
-          label: 'Описание от клиента',
-          children: data.description || 'Отсутствует',
-        },
-        {
-          key: 'createdAt',
-          label: 'Дата создания',
-          children: dayjs(data.createdAt).format('DD.MM.YYYY HH:mm'),
-        },
-        {
-          key: 'updatedAt',
-          label: 'Дата обновления',
-          children: dayjs(data.updatedAt).format('DD.MM.YYYY HH:mm'),
-        },
-        {
-          key: 'arrivalDate',
-          label: 'Дата прибытия на склад в Китае',
-          children: data.arrivalDate
-            ? dayjs(data.arrivalDate).format('DD.MM.YYYY HH:mm')
-            : 'Не указана',
-        },
-        {
-          key: 'adminNote',
-          label: 'Комментарий',
-          children: data.adminNote || 'Отсутствует',
-          span: 2,
-        },
-      ];
-    };
-
     const fetchShipment = async () => {
       try {
         setIsLoading(true);
@@ -114,7 +39,7 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
         const response = await shipmentsApi.getShipmentById(shipmentId);
 
         if (response.id) {
-          setItems(getItems(response));
+          setShipment(response);
         }
       } catch (err) {
         console.error(err);
@@ -130,45 +55,114 @@ const ShipmentModal = ({ open, onOk, onCancel, shipmentId }) => {
 
   const handleOk = async () => {
     try {
-      const response = await shipmentsApi.updateShipmentStatus(
-        shipmentId,
-        status
-      );
+      const response = await shipmentsApi.updateShipment(shipment.id, {
+        status: status || shipment.status,
+        adminNote: adminNote || shipment.adminNote,
+      });
 
       if (response) {
+        messageApi.open({
+          type: 'success',
+          content: 'Информация о посылке успешно обновлена!',
+        });
+
+        setShipment(response);
+        setAdminNote('');
+        setStatus('');
+
         onOk();
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setStatus('');
     }
   };
 
   return (
-    <Modal
-      width={'80%'}
-      title="Информация о посылке"
-      open={open}
-      onOk={handleOk}
-      onCancel={onCancel}
-      centered
-      okButtonProps={{
-        disabled: !status,
-      }}
-      okText="Сохранить"
-    >
-      {isLoading ? (
-        <Skeleton />
-      ) : (
-        <Descriptions
-          layout="vertical"
-          items={items}
-          bordered={true}
-          column={{ xs: 1, sm: 1, md: 3 }}
-        />
-      )}
-    </Modal>
+    <>
+      {contextHolder}
+      <Modal
+        width={'80%'}
+        title="Информация о посылке"
+        open={open}
+        onOk={handleOk}
+        onCancel={onCancel}
+        centered
+        destroyOnClose
+        okText="Сохранить"
+        okButtonProps={{
+          autoFocus: true,
+          htmlType: 'submit',
+          disabled: !status && !adminNote,
+        }}
+      >
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '8px',
+              gridTemplateRows: 'repeat(auto-fill, 32px)',
+            }}
+          >
+            <div>Код отслеживания</div>
+            <div style={{ color: 'var(--main)' }}>
+              <strong>{shipment.trackingCode}</strong>
+            </div>
+            <div>Статус</div>
+            <div>
+              <Select
+                style={{ width: '100%' }}
+                options={getShipmentStatusOptions(shipment)}
+                onChange={(value) => setStatus(value)}
+                defaultValue={shipment.status}
+              />
+            </div>
+            <div>Город</div>
+            <div>{shipment.deliverTo}</div>
+            <div>Имя</div>
+            <div>
+              {shipment.userName ? (
+                shipment.userName
+              ) : (
+                <span style={{ color: '#900' }}>Не указано</span>
+              )}
+            </div>
+            <div>Телефон</div>
+            <div>
+              {shipment.userPhone ? (
+                '+7' + shipment.userPhone
+              ) : (
+                <span style={{ color: '#900' }}>Не указан</span>
+              )}
+            </div>
+            <div>Описание от клиента</div>
+            <div>{shipment.description || 'Отсутствует'}</div>
+            <div>Дата создания</div>
+            <div>{dayjs(shipment.createdAt).format('DD.MM.YYYY HH:mm')}</div>
+            <div>Дата обновления</div>
+            <div>{dayjs(shipment.updatedAt).format('DD.MM.YYYY HH:mm')}</div>
+            <div>Дата прибытия на склад в Китае</div>
+            <div>
+              {shipment.arrivalDate
+                ? dayjs(shipment.arrivalDate).format('DD.MM.YYYY HH:mm')
+                : 'Не указана'}
+            </div>
+            <div>Комментарий</div>
+            <div>
+              <Input.TextArea
+                title="Комментарий"
+                maxLength={200}
+                rows={4}
+                defaultValue={shipment.adminNote}
+                onChange={(e) => setAdminNote(e.target.value)}
+              />
+            </div>
+          </div>
+        )}
+      </Modal>
+    </>
   );
 };
 

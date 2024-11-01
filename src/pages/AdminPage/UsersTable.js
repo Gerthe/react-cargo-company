@@ -46,6 +46,7 @@ const UsersTable = () => {
     };
 
     fetchUsers();
+    // eslint-disable-next-line
   }, [pagination.pageSize, debouncedSearchValue, pagination.current]);
 
   const redirectToShipmentsSortedByUser = (phone) => {
