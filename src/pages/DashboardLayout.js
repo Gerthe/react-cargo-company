@@ -3,7 +3,6 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { Button, ConfigProvider, Layout } from 'antd';
 import './DashboardLayout.css';
 import { theme } from '../theme';
-import { Helmet } from 'react-helmet';
 import authApi from '../api/auth.api';
 
 const { Header, Footer, Content } = Layout;
@@ -45,20 +44,14 @@ const DashboardLayout = () => {
 
   return (
     <ConfigProvider theme={theme}>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Pekin Cargo 888</title>
-        <link rel="canonical" href="http://CargoCompany/example" />
-      </Helmet>
-
-      <Layout style={layoutStyle}>
+      <Layout style={layoutStyle} className="dashboard">
         <Header style={headerStyle}>
           <div className="header-logo" style={{ position: 'relative' }}>
             <div className="header-logo__box" />
             <span>Pekin Cargo 888</span>
           </div>
 
-          {isLogged && (
+          {isLogged ? (
             <div>
               {userFromStorage && (
                 <div
@@ -81,6 +74,16 @@ const DashboardLayout = () => {
                 Выйти
               </Button>
             </div>
+          ) : (
+            <Button
+              ghost
+              style={{
+                margin: '14px 0',
+              }}
+              onClick={() => navigator('/login')}
+            >
+              Войти
+            </Button>
           )}
         </Header>
         <Content style={contentStyle}>

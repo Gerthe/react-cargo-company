@@ -13,6 +13,33 @@ const userModel = {
       throw new Error('Error inserting user: ' + err.message);
     }
   },
+  updateUser: async (id, data) => {
+    try {
+      if (Object.keys(data).length === 0) {
+        throw new Error('No fields to update');
+      }
+
+      const pool = db.getPool();
+
+      const updateFields = Object.keys(data)
+        .map((key) => `${key} = ?`)
+        .join(', ');
+      const values = Object.values(data);
+
+      await pool.query(`UPDATE shipments SET ${updateFields} WHERE id = ?`, [
+        ...values,
+        id,
+      ]);
+
+      const [results] = await pool.query(
+        `UPDATE users SET ${updateFields} WHERE id = ?`,
+        [...values, id]
+      );
+      return results.affectedRows > 0;
+    } catch (err) {
+      throw new Error('Error updating user: ' + err.message);
+    }
+  },
   getUserById: async (id) => {
     try {
       const pool = db.getPool();
@@ -106,6 +133,18 @@ const userModel = {
       return results[0].count;
     } catch (err) {
       throw new Error('Error getting total count: ' + err.message);
+    }
+  },
+  updatePassword: async (phone, password) => {
+    try {
+      const pool = db.getPool();
+      const [result] = await pool.query(
+        'UPDATE users SET password = ? WHERE phone = ?',
+        [password, phone]
+      );
+      return result.affectedRows > 0;
+    } catch (err) {
+      throw new Error('Error updating password: ' + err.message);
     }
   },
 };

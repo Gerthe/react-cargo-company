@@ -5,6 +5,8 @@ import {
   getAllUsers,
   login,
   getUserInfo,
+  resetPassword,
+  requestPasswordReset,
 } from '../controllers/userController.js';
 
 import authMiddleware from '../middleware/authMiddleware.js';
@@ -17,5 +19,8 @@ router.get('/me', authMiddleware, getUserInfo);
 router.get('/:id', authMiddleware, getUser);
 
 router.post('/login', login);
+
+router.post('/request-password-reset', requestPasswordReset);
+router.post('/password-reset', resetPassword);
 
 export default router;

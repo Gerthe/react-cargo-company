@@ -32,6 +32,25 @@ const authApi = {
   isLogged: () => {
     return !!localStorage.getItem('token');
   },
+  requestPasswordReset: async (phone) => {
+    const response = await axiosInstance.post(
+      `${apiName}/request-password-reset`,
+      {
+        phone,
+      }
+    );
+
+    return response.data;
+  },
+  resetPassword: async (phone, resetCode, password) => {
+    const response = await axiosInstance.post(`${apiName}/password-reset`, {
+      phone,
+      resetCode,
+      password,
+    });
+
+    return response.data;
+  },
 };
 
 export default authApi;

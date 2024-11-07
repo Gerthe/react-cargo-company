@@ -10,6 +10,7 @@ import RegisterPage from './pages/RegisterPage';
 import PrivateRoute from './components/PrivateRoute';
 import AddShipmentPage from './pages/Dashboard/AddShipmentPage';
 import AddressInfoPage from './pages/Dashboard/AddressInfoPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 //TODO: private routes for dashboard and admin
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: <RegisterPage />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPasswordPage />,
       },
       {
         path: 'dashboard',

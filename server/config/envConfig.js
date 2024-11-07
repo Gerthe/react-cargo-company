@@ -17,6 +17,7 @@ const env = {
   TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
   JWT_SECRET: process.env.JWT_SECRET || 'your_jwt_secret',
   BASE_URL: process.env.BASE_URL || 'http://localhost:3000',
+  SMSC_APIKEY: process.env.SMSC_APIKEY || 'your_smsc_apikey',
 };
 
 if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {

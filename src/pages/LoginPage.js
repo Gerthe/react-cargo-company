@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Alert } from 'antd';
-import Button from '../components/Button';
+import { Form, Input, Alert, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import authApi from '../api/auth.api';
 import { ERROR_MESSAGES } from '../constants/errors';
@@ -56,8 +55,22 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <h1>Войти в аккаунт</h1>
+    <div
+      style={{
+        margin: '0 auto',
+        width: 'fit-content',
+      }}
+    >
+      <h1
+        style={{
+          color: 'var(--main)',
+          fontSize: '1.6rem',
+          marginBottom: 20,
+          marginTop: 40,
+        }}
+      >
+        Войти в аккаунт
+      </h1>
       {formError && (
         <Alert
           message="Произошла ошибка"
@@ -79,14 +92,37 @@ const LoginPage = () => {
           <Input.Password />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={isFormLoading}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={isFormLoading}
+            style={{
+              backgroundColor: 'var(--secondary)',
+              color: 'var(--main)',
+            }}
+          >
             Войти
           </Button>
         </Form.Item>
       </Form>
-
       <div>
-        Нет аккаунта? <a href="/register">Зарегистрироваться</a>
+        <a href="/forgot-password">Забыли пароль?</a>
+      </div>
+
+      <div
+        style={{
+          marginTop: 60,
+        }}
+      >
+        <h2>Присоединяйтесь к Pekin Cargo 888!</h2>
+        <p>Зарегистрируйтесь, чтобы легко отслеживать свои отправления</p>
+        <Button
+          type="primary"
+          variant="filled"
+          onClick={() => navigate('/register')}
+        >
+          Зарегистрироваться
+        </Button>
       </div>
     </div>
   );
