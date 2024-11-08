@@ -4,7 +4,6 @@ import UsersTable from './UsersTable';
 import ShipmentsTable from './ShipmentsTable';
 import LogsTable from './LogsTable';
 import { useSearchParams } from 'react-router-dom';
-import Settings from './Settings';
 
 const AdminPage = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -31,12 +30,6 @@ const AdminPage = () => {
       key: 'logs',
       label: 'Логи',
       children: <LogsTable />,
-    },
-    {
-      key: 'settings',
-      label: 'Настройки',
-      children: <Settings />,
-      disabled: true,
     },
   ];
 

@@ -161,6 +161,7 @@ const HeaderSection = () => {
               width: '100%',
               backgroundColor: 'var(--main)',
               padding: 10,
+              margin: '20px 0',
             }}
           >
             <Link
