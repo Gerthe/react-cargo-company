@@ -26,7 +26,7 @@ app.use(
 );
 
 // Route to handle form submissions
-app.post('/send-message', telegramBotController.sendTelegramMessage);
+app.post('/api/send-message', telegramBotController.sendTelegramMessage);
 
 app.use(express.static(path.join(__dirname, '../build')));
 

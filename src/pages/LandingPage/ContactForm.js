@@ -26,7 +26,7 @@ const ContactForm = () => {
   }, [form, values]);
 
   const handleSubmit = () => {
-    fetch('/send-message', {
+    fetch('/api/send-message', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
